@@ -1,9 +1,13 @@
 ---
 - name: Upgrade to latest packages
+  become: yes
+  become_method: su
   apt: upgrade=full
 
 - name: Install base packages
   apt: name={{ item }} state=present
+  become: yes
+  become_method: su
   with_items:
   - curl
   - htop
@@ -15,6 +19,8 @@
 
 - name: Remove unused packages
   apt: name={{ item }} state=absent purge=yes
+  become: yes
+  become_method: su
   with_items:
   - exim4
   - exim4-daemon-light

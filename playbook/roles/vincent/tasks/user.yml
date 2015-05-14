@@ -1,14 +1,18 @@
 ---
 - name: "Install vincent useful packages : zsh, vim, irssi, screen."
   apt: pkg={{ item }} state=present 
+  become: yes
+  become_method: su
   with_items:
     - zsh
     - screen
     - vim
     - irssi
 
-- name: Create main system user
+- name: Create vincent user
   user: name=vincent shell=/bin/zsh
+  become: yes
+  become_method: su
 
 - name: Copy vimrc file configuration to vincent home
   copy: dest=/home/vincent/.vimrc src=vimrc owner=vincent group=vincent mode=0644
@@ -34,4 +38,3 @@
   with_file:
   - public_keys/blue
   - public_keys/heilong
-  - public_keys/sac

@@ -9,5 +9,5 @@ ssh vincent@server 'bash -s' < init.sh
 command to launch ansible : 
 
 ```bash
-ansible-playbook -i playbook/inventories/test playbook/site.yml 
+ansible-playbook -i playbook/inventories/test playbook/site.yml --ask-su-pass
 ```
