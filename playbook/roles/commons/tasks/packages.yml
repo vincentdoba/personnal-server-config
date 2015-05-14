@@ -15,7 +15,6 @@
   - tar
   - git
   - sudo
-  - python-apt # TODO remove when the awesome patch from o.girardot is merged and released
 
 - name: Remove unused packages
   apt: name={{ item }} state=absent purge=yes
