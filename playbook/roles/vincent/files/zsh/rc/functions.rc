@@ -1,0 +1,87 @@
+# invoke this every time when u change .zshrc to recompile it.
+function src()
+{
+        autoload -U zrecompile
+                [ -f ~/.zshrc ] && zrecompile -p ~/.zshrc
+                [ -f ~/.zcompdump ] && zrecompile -p ~/.zcompdump
+                [ -f ~/.zcompdump ] && zrecompile -p ~/.zcompdump
+                [ -f ~/.zshrc.zwc.old ] && rm -f ~/.zshrc.zwc.old
+                [ -f ~/.zcompdump.zwc.old ] && rm -f ~/.zcompdump.zwc.old
+                source ~/.zshrc
+}
+
+function usedesc() {
+	grep "^$1" /usr/portage/profiles/use.desc
+}
+
+
+#function _sshscreen() {
+#	TERM="rxvt"
+#	if [[ "x$2" == "x" ]]; then
+#		ssh -t $1 'screen -raADU screen'
+#	else if [[ $2 == "new" ]]; then
+#		ssh -t $1 "screen -SU $3"
+#	else
+#		ssh -t $1 "screen -raADU $2"
+#	fi; fi
+#}
+
+
+# SVN
+function svn() {
+        if [[ $1 == "ci" || $1 == "commit" || $1 == "propedit" || $1 == "propset"  || $1 = "help" ]]; then
+                /usr/bin/svn $*
+        else if [[ $1 == "preci" || $1 == "precommit" ]]; then
+                /usr/bin/svn status | grep -v '?' | ~/.zsh/functions/zshcolorsvn
+        else
+                /usr/bin/svn $* | ~/.zsh/functions/zshcolorsvn
+        fi; fi
+}
+
+# mkdir && cd
+function mcd() { mkdir "$1"; cd "$1" }
+
+# cd && ls
+function cl() { cd $1 && ls -a }
+
+# Often needed (if i rape '$LS_COLORS' again *g*)
+function _cols()
+{
+        esc="\033["
+        echo -e "       40      41      42      43      44      45      46      47      00"
+        for fore in 30 31 32 33 34 35 36 37; do
+                line1="$fore  "
+                line2="    "
+                for back in 40 41 42 43 44 45 46 47 00; do
+                        line1="${line1}${esc}${back};${fore}m Normal ${esc}0m"
+                        line2="${line2}${esc}${back};${fore};1m Bold   ${esc}0m"
+                done
+                echo -e "$line1\n$line2"
+        done
+}
+
+
+# find process and kill it
+function morons() { reply=(`ps x | grep -v COMMAND |perl -nle '@a=split(" ",$_,9);$_=$a[4];s/[()]//g;s/.*\///g;print'`) }
+compctl -K morons pskill pkill
+function pskill()
+{
+        local signal="HUP"
+        if [[ $1 == "" || $3 != "" ]]; then
+                print "Usage: $0 processname [signal]" && return 1
+        fi
+        [[ $2 != "" ]] && signal=$2
+        set -A pids $(command ps wwaux | grep $1 | grep -v "grep $1" | awk '{ print $2 }')
+        if [[ ${#pids} -lt 1 ]]; then
+                print "No matching processes for $1" && return 1
+        fi
+        if [[ ${#pids} -gt 1 ]]; then
+                print "${#pids} processes matched: $pids"
+                read -q "?Kill all? [y/n] " || return 0
+        fi
+        if kill -$signal $pids; then
+                echo "Killed $1 pid $pids with SIG$signal"
+        fi
+}
+
+# vim:syntax=zsh:

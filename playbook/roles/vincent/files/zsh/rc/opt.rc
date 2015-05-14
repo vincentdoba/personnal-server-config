@@ -1,0 +1,58 @@
+# -*- shell-script -*-
+
+setopt autolist         # List possible completions
+setopt automenu         # But after that switch between possible
+
+# zsh is dfx compliant :)
+setopt CORRECT
+setopt NOCORRECT_ALL
+
+setopt ALWAYS_TO_END
+setopt NOTIFY
+setopt NO_BG_NICE
+
+# in order to scroll if completion list is too big
+export LISTPROMPT
+
+setopt auto_cd					# a commande like % /usr/local is equivalent to cd /usr/local
+
+# commande name to resume a job
+setopt AUTO_RESUME
+
+
+# auto pushd
+setopt AUTO_PUSHD
+setopt PUSHD_TO_HOME
+setopt PUSHD_SILENT
+
+watch=(notme)
+
+#export MANPAGER="LC_ALL='C' sed -e 's/\x1B\[[[:digit:]]\+m//g' \
+#                    | tr '\267' '.' | col -b \
+#                    | vim -c 'let no_plugin_maps = 1' \
+#					      -c 'set nolist nomod ft=man' \
+#						  -c 'let g:showmarks_enable=0' \
+#						  -c 'runtime! macros/less.vim' -"
+
+# append each session history to common on
+#setopt INC_APPEND_HISTORY
+# share history between all session
+#setopt SHARE_HISTORY
+# remove dup
+#setopt HIST_IGNORE_DUPS
+# don't save duplicate entries
+#setopt HIST_SAVE_NO_DUPS
+# don't show dups when scrolling history
+#setopt HIST_FIND_NO_DUPS
+# remove useless space in stored commands
+#setopt HIST_REDUCE_BLANKS
+# don't store lines beginning with space
+#setopt HIST_IGNORE_SPACE
+
+# rprompt only on current line
+#setopt TRANSIENT_RPROMPT
+
+# report lenghty programs
+#setopt REPORTTIME='10'
+
+# vim:syntax=zsh:

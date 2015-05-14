@@ -1,0 +1,8 @@
+---
+- hosts: servers
+  remote_user: vincent
+  vars_files:
+    - "vars/common.yml"
+  roles:
+    - commons
+    - vincent

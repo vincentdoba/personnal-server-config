@@ -1,0 +1,14 @@
+#
+# History options
+#
+
+setopt EXTENDED_HISTORY
+setopt SHARE_HISTORY						# _all_ zsh sessions share the same history files
+setopt HIST_IGNORE_ALL_DUPS			# ignores duplications
+
+HISTFILE=$HOME/.history-$HOST
+HISTSIZE=10000
+SAVEHIST=10000
+
+export HISTFILE HISTSIZE SAVEHIST
+# vim:syntax=zsh:

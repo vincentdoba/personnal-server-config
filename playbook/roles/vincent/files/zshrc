@@ -1,0 +1,27 @@
+# -*- shell-script -*-
+
+[ ! -d /tmp/$USER ] && mkdir /tmp/$USER
+
+source $HOME/.profile
+
+#if [[ $TERM != "dumb" ]]; then
+  ZSHRCDIR=~/.zsh
+  fpath=($ZSHRCDIR/functions $fpath)
+
+  autoload -U zutil
+  autoload -U compinit
+  autoload -U complist
+  autoload -Uz vcs_info
+
+  zstyle ':vcs_info:*' enable git cvs svn darcs
+
+  # Activation
+  compinit -i # -i : ignore unsafe files
+
+  # Chargement des différentes parties :
+  for i in $(echo $ZSHRCDIR/rc/*.rc | grep -v '\#' | sort -n); do
+    source $i
+  done
+#fi
+export PYTHONSTARTUP=~/.pystartup
+

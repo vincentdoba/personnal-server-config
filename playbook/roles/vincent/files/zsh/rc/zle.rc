@@ -1,0 +1,305 @@
+setopt prompt_subst
+
+zmodload zsh/parameter 2> /dev/null
+
+real_path() {
+  local val tmp
+  if [ "${1[1]}" != "/" ] ; then
+    tmp="$PWD/$1"
+  else
+    tmp="$1"
+  fi
+  val="$(readlink -f "$1" 2> /dev/null)" || val="$tmp"
+  echo "$val"
+}
+
+_git_path() {
+  local abspath git_dir git_status normpwd
+  abspath=$(pwd -P)
+#@if google
+  if [[ "${abspath}" == "/home/rbarrois"* ]]; then
+    return 1
+  fi
+#@end
+
+  state=""
+  statelevel=""
+  subpath=""
+  changes=""
+  git_dir="$(git rev-parse --git-dir 2> /dev/null)" || return 1
+  vcslogo="±"
+  if [ -d "$git_dir/rebase-apply" ] ; then
+    if [ -f "$git_dir/rebase-apply/rebasing" ] ; then
+      state="rebase"
+    elif [ -f "$git_dir/rebase-apply/applying" ] ; then
+      state="am"
+    else
+      state="am/rebase"
+    fi
+    branch="$(git symbolic-ref HEAD 2> /dev/null)"
+  elif [ -d "$git_dir/rebase-merge" ] ; then
+    if [ -f "$git_dir/rebase-merge/interactive" ] ; then
+      state="rebase -i"
+    else
+      state="rebase -m"
+    fi
+    branch="$(cat "$git_dir/rebase-merge/head-name")"
+  elif [ -f "$git_dir/MERGE_HEAD" ] ; then
+    state="merge"
+    branch="$(git symbolic-ref HEAD 2> /dev/null)"
+  else
+    [ -f "$git_dir/BISECT_LOG" ] && state="bisect"
+    branch="$(git symbolic-ref HEAD 2> /dev/null)" \
+    || branch="$(git describe --exact-match HEAD 2> /dev/null)" \
+    || branch="$(cut -c1-7 "$git_dir/HEAD")"
+  fi
+  if [ -z "$state" ] ; then
+    stashed="$(git stash list)"
+    if [ -n "$stashed" ] ; then
+      state="stashed $(echo "$stashed" | wc -l)"
+      statelevel="low"
+    fi
+  fi
+  git_status=$(git status 2>/dev/null | grep --color=never '^# \(Untracked\|Changes\|Changed but not updated:\|Your branch is\)')
+  if [[ $(echo ${git_status} | grep -c "^# Changes") > 0 ]]; then
+      changes="${changes}δ"
+  fi
+  if [[ $(echo ${git_status} | grep -c "^# Changed") > 0 ]]; then
+      changes="${changes}≠"
+  fi
+  if [[ $(echo ${git_status} | grep -c "^# Untracked") > 0 ]]; then
+      changes="${changes}+"
+  fi
+  if [[ $(echo ${git_status} | grep -c "^# Your branch is ahead") > 0 ]]; then
+      changes="${changes}>"
+  fi
+  if [[ $(echo ${git_status} | grep -c "^# Your branch is behin") > 0 ]]; then
+      changes="${changes}<"
+  fi
+
+  projectpath="$(real_path "$git_dir")"
+  projectpath="$(dirname "$projectpath")"
+  subpath="${normpwd#$projectpath}"
+  branch="${branch#refs/heads/}"
+  return 0
+}
+
+_svn_path() {
+  local pprevwhr prevwhr whr svn_status normpwd
+
+  state=""
+  if [[ -d $normpwd/.svn/ ]] ; then
+    vcslogo="ʃ"
+    pprevwhr="$normpwd"
+    prevwhr="$normpwd"
+    whr="$normpwd"
+    changes=""
+
+    svn_status=$(=svn status 2>/dev/null)
+    if [[ $(echo ${svn_status} | grep -c "^\(A\|M\)") > 0 ]]; then
+        changes="${changes}δ"
+    fi
+    if [[ $(echo ${svn_status} | grep -c "^\(\?\|!\)") > 0 ]]; then
+        changes="${changes}≠"
+    fi
+
+    while [[ -d $whr/.svn/ ]] ; do
+      if [ -d $whr/trunk/ ] || [ -d $whr/branches ] || [ -d $whr/tags ]  ; then
+        projectpath="$whr"
+        branch="$(basename "$prevwhr")"
+        case $branch in
+          tags)
+            branch="tag_$(basename "$pprevwhr")"
+            subpath="${normpwd/$pprevwhr\/}"
+            subpath="${subpath/$pprevwhr}"
+            ;;
+          branches)
+            branch="$(basename "$pprevwhr")"
+            subpath="${normpwd/$pprevwhr\/}"
+            subpath="${subpath/$pprevwhr}"
+            ;;
+          trunk)
+            subpath="${normpwd#$prevwhr}"
+            ;;
+        esac
+        return 0
+      fi
+      pprevwhr="$prevwhr"
+      prevwhr="$whr"
+      whr="$(dirname "$whr")"
+    done
+  fi
+  return 1
+}
+
+_set_title() {
+  unset normpwd
+  case $TERM in
+    xterm*|aterm|Eterm|rxvt|screen)
+      if [ -n "$WINDOW" ]; then
+        print -Pn "\e]0;$WINDOW|$TERM_TITLE\a"
+      else
+        print -Pn "\e\]0;$TERM_TITLE\a"
+      fi
+      ;;
+  esac
+}
+
+listjobs() {
+    # Puts a list of running jobs into psvar[7]
+    local a j i
+
+    rjobs=()
+    for a in ${(k)jobstates}; do
+        j=$jobstates[$a];
+        i="${${(@s,:,)j}[2]}"
+        rjobs+=($a${i//[^+-]/});
+    done
+    rjobs=${(j:,:)rjobs}
+}
+
+precmd() {
+  local normpwd projectpath subpath branch state statelevel vcslogo rjobs
+
+# psvar:
+# 1: list of jobs (if any)
+# 2: VCS logo
+# 3: VCS change status
+# 4: projectpath
+# 5: branch
+# 6: subpath within branch of project
+# 7: project name
+# 8: state of working copy
+# 9: statelevel (??)
+  psvar=()
+  listjobs
+  psvar[1]="$rjobs"
+
+  normpwd="$(real_path "$PWD")"
+  if ! _git_path ; then
+#@if !google
+    if ! _svn_path ; then
+#@end
+      _set_title
+      return
+#@if !google
+    fi
+#@end
+  fi
+  projectpath="${projectpath/$HOME/~}"
+  subpath="${subpath#/}"
+  if [[ -n "${subpath}" ]]; then
+      subpath=":${subpath}";
+  fi
+
+  if [ -z "${changes}" ]; then
+      changes="✓"
+  fi
+
+  psvar[2]="$vcslogo"
+  psvar[3]="$changes"
+  psvar[4]="$projectpath"       # project basepath
+  psvar[5]="$branch"            # branch within the project
+  psvar[6]="$subpath"           # subpath within the branch of the project
+  psvar[7]="$(basename "$projectpath")" # name of the project
+  if [ -n "$state" ] ; then
+    psvar[8]="$state"             # state of the working copy
+    psvar[9]="$statelevel"
+  fi
+  _set_title
+}
+
+preexec() {
+  psvar[8]="$1"
+  _set_title
+}
+
+autoload colors zsh/terminfo
+if [[ "$terminfo[colors]" -ge 8 ]]; then
+    colors
+fi
+for color in BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
+    eval PR_$color='%{$terminfo[bold]$fg[${(L)color}]%}'
+    eval PR_LIGHT_$color='%{$fg[${(L)color}]%}'
+done
+PR_NO_COLOUR="%{$terminfo[sgr0]%}"
+
+
+########
+# Date #
+########
+PROMPT_DATE=$PR_CYAN'%D{%H:%M:%S}'$PR_NO_COLOUR
+
+#############
+# user@host #
+#############
+
+# red for root, green otherwise
+if (( EUID == 0 )); then
+    PROMPT_USERCOLOR=$PR_RED
+else
+    PROMPT_USERCOLOR=$PR_GREEN
+fi
+
+PROMPT_HOST_AT_COLOR=$PR_BLACK
+PROMPT_HOST_AT=$PROMPT_HOST_AT_COLOR'@'$PR_NO_COLOUR
+
+if [[ $SSH_CLIENT = *.* || $REMOTEHOST = *.* || $TERM = "screen" ]]; then
+	PROMPT_HOST=$PROMPT_HOST_AT$PR_LIGHT_CYAN'%m'$PR_NO_COLOUR
+else
+	PROMPT_HOST=""
+fi
+
+#@if google
+DEFAULT_USER="rbarrois"
+#@end
+#@if x.org
+DEFAULT_USER="x2006barrois"
+#@end
+#@if baldelx
+DEFAULT_USER="raphael-barrois-2006"
+#@end
+#@if !google && !x.org && !baldelx
+DEFAULT_USER="xelnor"
+#@end
+
+if [[ $USER = $DEFAULT_USER ]]; then
+  PROMPT_USER_HOST=$PROMPT_HOST
+else
+  PROMPT_USER_HOST=$PROMPT_USERCOLOR'%n'$PR_NO_COLOUR$PROMPT_HOST
+fi
+#PROMPT_SHELL_COLOR=$'%{\e[00;35m%}'
+
+CONF_PART=$CONF_SEP_COLOR"v$CONF_VERSION_COLOR$CONF_VERSION$CONF_SEP_COLOR/$CONFROOT_VERSION_COLOR$CONFROOT_VERSION$CONF_SEP_COLOR"
+
+
+# compile prompt, with red invite on 'exit-Status != 0'
+if [[ $TERM = 'screen' ]]; then
+    PROCSPLITTER=$'%{\ek\e\\%}'
+else
+    PROCSPLITTER=''
+fi
+PROMPT_INVITE_LEFT=$PR_BLUE'%~'
+PROMPT_INVITE_RIGHT=$'%(?.%{%}.'$PR_RED'%?)%# '$PR_NO_COLOUR
+PROMPT_INVITE="${PROMPT_INVITE_LEFT}${PROCSPLITTER} ${PROMPT_INVITE_RIGHT}"
+if [[ "${PROMPT_USER_HOST}" != "" ]]; then
+  PROMPT_USER_HOST="${PROMPT_USER_HOST}: "
+fi
+PROMPT_BASE=$PROMPT_DATE' '$PROMPT_USER_HOST$PROMPT_INVITE
+
+TERM_TITLE="%(4v.%7v@%5v.%1~)"
+if [[ $SSH_CLIENT = *.* || $REMOTEHOST = *.* || -n "$WINDOW" || $TERM = "screen" ]]; then
+    # add host to the title
+    TERM_TITLE='%m: '$TERM_TITLE
+else
+    TERM_TITLE='φ: '$TERM_TITLE
+fi
+
+VCS_PATH_BRANCH="%(4v.${PR_LIGHT_CYAN}%4v${PR_NO_COLOUR}%6v${PR_BLACK}@${PR_NO_COLOUR}${PR_LIGHT_YELLOW}%5v.)${PR_NO_COLOUR}"
+VCS_STATE="%(8v.(%(9v.${PR_GREEN}.${PR_RED})%8v${PR_NO_COLOUR}).) ${PR_BLACK}[${PR_NO_COLOUR}${PR_LIGHT_GREEN}%3v${PR_BLACK}]${PR_NO_COLOUR}"
+VCS_PROMPT=$PR_LIGHT_MAGENTA'%2v» '$VCS_PATH_BRANCH$VCS_STATE
+UPPROMPT="%(4v.${VCS_PROMPT}
+.)"
+PROMPT=$UPPROMPT$PROMPT_BASE
+
+# vim:syntax=zsh

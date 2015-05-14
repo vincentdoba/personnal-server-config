@@ -1,0 +1,22 @@
+---
+- name: Upgrade to latest packages
+  apt: upgrade=full
+
+- name: Install base packages
+  apt: name={{ item }} state=present
+  with_items:
+  - curl
+  - htop
+  - rsync
+  - tar
+  - git
+  - sudo
+  - python-apt # TODO remove when the awesome patch from o.girardot is merged and released
+
+- name: Remove unused packages
+  apt: name={{ item }} state=absent purge=yes
+  with_items:
+  - exim4
+  - exim4-daemon-light
+  - exim4-daemon-heavy
+

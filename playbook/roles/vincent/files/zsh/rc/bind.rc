@@ -1,0 +1,11 @@
+# Pour que alt+backspace soit mieux
+autoload select-word-style
+select-word-style bash
+
+# Pour que ctrl+fleche marche
+bindkey '^[[1;5C' forward-word
+bindkey '^[[1;5D' backward-word
+
+bindkey "^[[A" history-search-backward
+bindkey "^[[B" history-search-forward
+# vim:syntax=zsh:

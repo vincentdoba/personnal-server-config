@@ -1,0 +1,52 @@
+# -*- shell-script -*-
+
+# some variables
+myhosts=($(<$ZSHRCDIR/hosts))
+myusers=($(<$ZSHRCDIR/users))
+
+# global zstyle
+zstyle ':completion:*' users $myusers
+zstyle ':completion:*' hosts $myhosts
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:processes' command 'ps -au$USER'
+zstyle ':completion:*:descriptions' format '%B%d%b'
+
+# others zstyle
+zstyle ':completion:*:*:zcompile:*:*' ignored-patterns '(*~|*.zwc)'
+zstyle ':completion:*:*:lintian:*' file-patterns '*.deb'
+zstyle ':completion:*:*:cd:*:*' directories
+
+# from old config
+zstyle ':completion:*' _all_matches _list _oldlist _menu _expand _complete _match _ignored _correct _approximate _prefix
+zstyle ':completion:*' max-errors 2 # don't try to correct when more than 2 errors
+zstyle ':completion:*:descriptions' format '%d :' # print in what we are looking for
+zstyle ':completion:*' group-name '' # group by type of data
+
+zstyle ':completion:*' menu select=1 # navigate between options if at least 5
+
+zstyle ':completion:*:*:kill:*' menu yes select
+function _pslist() {reply=(`ps -u $USER -o pid,user,nice,pcpu,pmem,cputime,tname,start_time,args`)}
+compctl -K _pslist kill
+
+
+
+
+setopt AUTO_LIST # list automatically when multiple choices
+setopt AUTO_MENU # use tab to navigate between possible completions
+#unsetopt MENU_COMPLETE # don't put the first answer
+
+setopt COMPLETE_IN_WORD # allow to complete first part of a written name :
+# cd friz, cursor on i, <tab>  => cd frankiz
+
+setopt LIST_TYPES # Print * for executables, / for directories, @ for links, ...
+setopt LIST_PACKED # vary column widthes to spare space
+setopt LIST_ROWS_FIRST # put adjacent possibilities in same lines instead of columns
+setopt NO_LIST_BEEP # don't beep when showing a lost of choices
+
+
+
+
+
+
+
+# vim:syntax=zsh:

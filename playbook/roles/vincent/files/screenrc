@@ -1,0 +1,25 @@
+bell_msg "^G Bell in window %n"
+autodetach on
+startup_message off
+nonblock on
+vbell off
+defutf8 on
+
+# show command name instead of bash
+shelltitle "%|bash"
+
+caption always
+hardstatus string "%?%F%{= kG}%:%{= Wk}%? [$USER@%H] %n : %t"
+
+
+# Always show lastline
+#hardstatus alwayslastline
+#hardstatus string "%{= kG}[ %{G}${USER}@%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}][%{Y}%l%{g}]%{=b C}%{W}"
+caption string "%{= g}[ %{G}${USER}@%H%{g} ][%= %{= w}%?%-Lw%?%{r}(%{W}%n*%f %t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c:%s %{g}][%{Y}%l%{g}]%{=b C}%{W}"
+
+#hardstatus alwayslastline
+#hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %d/%m %{W}%c %{g}][%{Y}%l%{g}]%{=b C}%{W}'
+
+# Allow scrollback in xterm
+termcap xterm* LP
+termcapinfo xterm ti@:te@
