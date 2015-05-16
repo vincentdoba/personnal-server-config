@@ -1,5 +1,7 @@
 # Sac Ansible Configuration
 
+**Note : deployment of this server was tested on a freshly installed debian jessie (debian 8)**
+
 command to copy public key to vincent .ssh file
 
 ```bash
@@ -10,4 +12,48 @@ command to launch ansible :
 
 ```bash
 ansible-playbook -i playbook/inventories/test playbook/site.yml --ask-su-pass
+```
+
+command to launch ansible at a special task
+
+```bash
+ansible-playbook -i playbook/inventories/test playbook/site.yml --ask-su-pass --start-at-task="My Task Name"
+```
+
+## Add a site
+
+* add site hostname in file *playbook/vars/common.yml*, for instance : 
+```yaml
+yoursite_hostname: "yoursite.cedeela.fr" # my new site about manatee
+```
+* create a directory *playbook/roles/yoursite*
+* create a file *playbook/roles/yoursite/tasks/main.yml* containing the following lines :
+```yaml
+---
+- include: yoursite.yml
+```
+* create a file *playbook/roles/yoursite/templates/virtual_host_config*, that will contains nginx virtual host configuration for your site 
+* create a file *playbook/roles/yoursite/tasks/yoursite.yml*
+* in the file *playbook/roles/yoursite/tasks/yoursite.yml*, add the following tasks at the end :
+```yaml
+- name: Create blag virtual host
+  template: src=virtual_host_config dest=/etc/nginx/sites-available/yoursite
+  notify: Reload nginx
+  become: yes
+  become_method: su
+
+- name: Create blag link in site-enabled
+  file: src=/etc/nginx/sites-available/blag state=link dest=/etc/nginx/sites-enabled/yoursite
+  notify: Reload nginx
+  become: yes
+  become_method: su
+
+- name: Create line for blag in /etc/hosts
+  lineinfile: dest=/etc/hosts line="127.0.0.1 {{ yoursite_hostname }}" insertafter="^127"
+  become: yes
+  become_method: su
+```
+* add the following line to *playbook/site.yml*, in section *roles* :
+```yaml
+- yoursite
 ```
