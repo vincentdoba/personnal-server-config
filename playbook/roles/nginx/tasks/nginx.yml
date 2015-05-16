@@ -44,3 +44,8 @@
   become: yes
   become_method: su
   notify: Reload nginx
+
+- name: Create line for default host in /etc/hosts
+  lineinfile: dest=/etc/hosts line="127.0.0.1 {{ hostname }}" insertafter="^127"
+  become: yes
+  become_method: su

@@ -1,0 +1,6 @@
+server {
+  listen 80 default;
+  server_name {{ blag_hostname|mandatory }};
+  root /home/sites/blag/output;
+  server_tokens off;     # don't show the version number, a security best practice
+}
