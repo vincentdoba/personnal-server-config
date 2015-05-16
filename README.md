@@ -24,7 +24,7 @@ ansible-playbook -i playbook/inventories/test playbook/site.yml --ask-su-pass --
 
 * add site hostname in file *playbook/vars/common.yml*, for instance : 
 ```yaml
-yoursite_hostname: "yoursite.cedeela.fr" # my new site about manatee
+yoursite_hostname: "yoursite.cedeela.fr" # my new site about manatees
 ```
 * create a directory *playbook/roles/yoursite*
 * create a file *playbook/roles/yoursite/tasks/main.yml* containing the following lines :
@@ -32,8 +32,19 @@ yoursite_hostname: "yoursite.cedeela.fr" # my new site about manatee
 ---
 - include: yoursite.yml
 ```
-* create a file *playbook/roles/yoursite/templates/virtual_host_config*, that will contains nginx virtual host configuration for your site 
+* create a file *playbook/roles/yoursite/templates/virtual_host_config*, that will contains nginx virtual host configuration for your site. Below the most default nginx configuration :
+```
+server {
+  listen 80;
+  server_name {{ yoursite_hostname|mandatory }};
+  root /home/sites/yoursite ;
+  server_tokens off;
+```
 * create a file *playbook/roles/yoursite/tasks/yoursite.yml*
+* in the file *playbook/roles/yoursite/tasks/yoursite.yml*, add the task to create site root :
+```yaml
+
+```
 * in the file *playbook/roles/yoursite/tasks/yoursite.yml*, add the following tasks at the end :
 ```yaml
 - name: Create blag virtual host
