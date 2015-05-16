@@ -1,0 +1,46 @@
+---
+- name: Install python-pycurl package
+  apt: pkg=python-pycurl
+  become: yes
+  become_method: su
+
+- name: Setup key for nginx repository 
+  apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
+  become: yes
+  become_method: su
+
+- name: Add nginx latest version repository
+  apt_repository: repo="deb http://nginx.org/packages/debian/ jessie nginx"
+  become: yes
+  become_method: su
+
+- name: Install nginx package
+  apt: pkg=nginx state=latest force=yes
+  become: yes
+  become_method: su
+
+- name: Create nginx config directories
+  file: path={{ item }} state=directory
+  become: yes
+  become_method: su
+  with_items:
+  - /etc/nginx/sites-available
+  - /etc/nginx/sites-enabled
+  - /etc/nginx/ssl
+
+- name: Create nginx main config
+  copy: src=nginx.conf dest=/etc/nginx/nginx.conf
+  become: yes
+  become_method: su
+
+- name: Create nginx mime type file
+  copy: src=mime.types dest=/etc/nginx/mime.types
+  become: yes
+  become_method: su
+  notify: Reload nginx
+
+- name: Setup default webserver certificates
+  command: openssl req -new -nodes -x509 -subj "/C=FR/ST=Paris/L=Paris/O=IT/CN={{ hostname }}" -days 3650 -keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.crt -extensions v3_ca creates=/etc/nginx/ssl/server.crt
+  become: yes
+  become_method: su
+  notify: Reload nginx

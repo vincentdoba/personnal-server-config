@@ -16,21 +16,33 @@
 
 - name: Copy vimrc file configuration to vincent home
   copy: dest=/home/vincent/.vimrc src=vimrc owner=vincent group=vincent mode=0644
+  become: yes
+  become_method: su
 
 - name: Copy vim specific configuration files to vincent home
   copy: dest=/home/vincent/.vim src=vim/ owner=vincent group=vincent mode=0644
+  become: yes
+  become_method: su
 
 - name: Copy zshrc file configuration to vincent home
   copy: dest=/home/vincent/.zshrc src=zshrc owner=vincent group=vincent mode=0644
+  become: yes
+  become_method: su
 
 - name: Copy zsh specific configuration files to vincent home
   copy: dest=/home/vincent/.zsh src=zsh/ owner=vincent group=vincent mode=0644
+  become: yes
+  become_method: su
 
 - name: Copy irssi configuration files to vincent home
   copy: dest=/home/vincent/.irssi src=irssi/ owner=vincent group=vincent mode=0644
+  become: yes
+  become_method: su
 
 - name: Copy screenrc file configuration to vincent home
   copy: dest=/home/vincent/.screenrc src=screenrc owner=vincent group=vincent mode=0644
+  become: yes
+  become_method: su
 
 - name: Set authorized keys for vincent
   authorized_key: user=vincent
@@ -38,3 +50,5 @@
   with_file:
   - public_keys/blue
   - public_keys/heilong
+  become: yes
+  become_method: su
