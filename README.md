@@ -39,27 +39,31 @@ server {
   server_name {{ yoursite_hostname|mandatory }};
   root /home/sites/yoursite ;
   server_tokens off;
+}
 ```
 * create a file *playbook/roles/yoursite/tasks/yoursite.yml*
 * in the file *playbook/roles/yoursite/tasks/yoursite.yml*, add the task to create site root :
 ```yaml
-
+- name: Create yoursite directory
+  file: path=/home/sites/yoursite state=directory recurse=yes owner=www-data group=www-data mode=0755
+  become: yes
+  become_method: su
 ```
 * in the file *playbook/roles/yoursite/tasks/yoursite.yml*, add the following tasks at the end :
 ```yaml
-- name: Create blag virtual host
+- name: Create yoursite virtual host
   template: src=virtual_host_config dest=/etc/nginx/sites-available/yoursite
   notify: Reload nginx
   become: yes
   become_method: su
 
-- name: Create blag link in site-enabled
-  file: src=/etc/nginx/sites-available/blag state=link dest=/etc/nginx/sites-enabled/yoursite
+- name: Create yoursite link in site-enabled
+  file: src=/etc/nginx/sites-available/yoursite state=link dest=/etc/nginx/sites-enabled/yoursite
   notify: Reload nginx
   become: yes
   become_method: su
 
-- name: Create line for blag in /etc/hosts
+- name: Create line for yoursite in /etc/hosts
   lineinfile: dest=/etc/hosts line="127.0.0.1 {{ yoursite_hostname }}" insertafter="^127"
   become: yes
   become_method: su
