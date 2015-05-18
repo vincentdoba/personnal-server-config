@@ -3,3 +3,4 @@ hostname: "cedeela.fr"
 
 # sites on the sac server
 blag_hostname: "blag.cedeela.fr" # blaaaag : blog, default site
+roundcube_hostname: "roundcube.cedeela.fr" # roundcube : webmail
