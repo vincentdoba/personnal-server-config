@@ -1,0 +1,12 @@
+---
+- name: Install all owncloud necessary packages
+  apt: pkg={{ item }} state=present
+  with_items:
+    - php5
+    - php-pear
+    - php5-pgsql
+    - php5-mcrypt
+    - php5-intl 
+    - postgresql-9.4
+  become: yes
+  become_method: su

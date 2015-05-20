@@ -4,10 +4,17 @@
   become: yes
   become_method: su
 
-# TODO add uncompressing of owncloud
 - name: Download owncloud
-  get_url: url=https://download.owncloud.org/community/owncloud-{{ owncloud_version }}.tar.bz2
+  get_url: url=https://download.owncloud.org/community/owncloud-{{ owncloud_version }}.tar.bz2 dest=/home/commons/downloads
+  become: yes
+  become_method: su
  
+- name: Extract owncloud
+  unarchive: src=/home/commons/downloads/owncloud-{{ owncloud_version }}.tar.bz2 dest=/home/sites/owncloud
+  become: yes
+  become_method: su
+
+
 - name: Setup owncloud directories owner
   file: path={{ item }} state=directory recurse=yes owner=www-data group=www-data mode=0750
   become: yes
