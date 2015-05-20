@@ -9,19 +9,24 @@
   become: yes
   become_method: su
   with_items:
-  - curl
-  - htop
-  - rsync
-  - tar
-  - git
-  - sudo
+    - curl
+    - htop
+    - rsync
+    - tar
+    - git
+    - sudo
+    - python-setuptools
 
 - name: Remove unused packages
   apt: name={{ item }} state=absent purge=yes
   become: yes
   become_method: su
   with_items:
-  - exim4
-  - exim4-daemon-light
-  - exim4-daemon-heavy
+    - exim4
+    - exim4-daemon-light
+    - exim4-daemon-heavy
 
+- name: Install pip
+  easy_install: name=pip
+  become: yes
+  become_method: su
