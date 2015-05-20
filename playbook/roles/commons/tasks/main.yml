@@ -1,3 +1,5 @@
 ---
 - include: packages.yml
+  tags:
+    - commons
 - include: directories.yml

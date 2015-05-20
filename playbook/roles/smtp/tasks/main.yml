@@ -1,0 +1,4 @@
+---
+- includes: opensmtpd.yml
+  tags:
+    - smtp 
