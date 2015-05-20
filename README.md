@@ -18,6 +18,7 @@ command to launch ansible at a special task
 
 ```bash
 ansible-playbook -i playbook/inventories/test playbook/site.yml --ask-su-pass --start-at-task="My Task Name"
+```
 
 command to launch ansible at a special tag
 
