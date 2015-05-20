@@ -1,0 +1,28 @@
+---
+- name: Create owncloud directory
+  file: path=/home/sites/owncloud state=directory recurse=yes owner=root group=www-data mode=0750
+  become: yes
+  become_method: su
+
+# TODO add uncompressing of owncloud
+- name: Download owncloud
+  get_url: url=https://download.owncloud.org/community/owncloud-{{ owncloud_version }}.tar.bz2
+ 
+- name: Setup owncloud directories owner
+  file: path={{ item }} state=directory recurse=yes owner=www-data group=www-data mode=0750
+  become: yes
+  become_method: su
+  with_items:
+    - /home/sites/owncloud/apps
+    - /home/sites/owncloud/config
+    - /home/sites/owncloud/data
+    - /home/sites/owncloud/themes
+
+- name: Change owner on htaccess files
+  file: path={{ item }} state=file owner=root group=www-data mode=0644
+  become: yes
+  become_method: su
+  with_items:
+    - /home/sites/owncloud/.htaccess
+    - /home/sites/owncloud/data/.htaccess
+
