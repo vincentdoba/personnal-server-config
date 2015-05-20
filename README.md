@@ -29,11 +29,17 @@ ansible-playbook -i playbook/inventories/test playbook/site.yml --ask-su-pass --
 
 ## Add a site
 
+### Setup hostname
+
 * add site hostname in file *playbook/vars/common.yml*, for instance : 
 ```yaml
 yoursite_hostname: "yoursite.cedeela.fr" # my new site about manatees
 ```
+
+### Create ansible tasks and templates
+
 * create a directory *playbook/roles/yoursite*
+* create a directory *playbook/roles/yoursite/tasks*
 * create a file *playbook/roles/yoursite/tasks/main.yml* containing the following lines :
 ```yaml
 ---
@@ -77,6 +83,21 @@ server {
   become: yes
   become_method: su
 ```
+
+### Add dependencies
+
+* create a directory *playbook/roles/yoursite/meta*
+* create a file *playbook/roles/yoursite/meta/main.yml*
+* add the following lines in file *playbook/roles/yoursite/meta/main.yml*
+```yaml
+---
+dependencies:
+  - nginx
+  - commons
+```
+
+### Activate your site in ansible run
+
 * add the following line to *playbook/site.yml*, in section *roles* :
 ```yaml
 - yoursite
