@@ -1,5 +1,6 @@
 ---
-- include: owncloud.yml
+- include: packages.yml
   tags: 
     - owncloud
-- include: packages.yml
+- include: database.yml
+- include: owncloud.yml

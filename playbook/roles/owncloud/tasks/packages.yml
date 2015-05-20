@@ -7,6 +7,5 @@
     - php5-pgsql
     - php5-mcrypt
     - php5-intl 
-    - postgresql-9.4
   become: yes
   become_method: su
