@@ -18,7 +18,14 @@ command to launch ansible at a special task
 
 ```bash
 ansible-playbook -i playbook/inventories/test playbook/site.yml --ask-su-pass --start-at-task="My Task Name"
+
+command to launch ansible at a special tag
+
+```bash
+ansible-playbook -i playbook/inventories/test playbook/site.yml --ask-su-pass --tags="My tag name"
 ```
+
+**Note :** each role has its own tags, which is the name of the role
 
 ## Add a site
 
@@ -31,6 +38,8 @@ yoursite_hostname: "yoursite.cedeela.fr" # my new site about manatees
 ```yaml
 ---
 - include: yoursite.yml
+  tags:
+    - yoursite
 ```
 * create a file *playbook/roles/yoursite/templates/virtual_host_config*, that will contains nginx virtual host configuration for your site. Below the most default nginx configuration :
 ```
