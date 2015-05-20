@@ -1,0 +1,30 @@
+---
+- name: Setup key for postgresql repository 
+  apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
+  become: yes
+  become_method: su
+
+- name: "Add postgresql latest version repository"
+  apt_repository: repo="deb http://apt.postgresql.org/pub/repos/apt/ jessie-pgdg main"
+  become: yes
+  become_method: su
+
+- name: Install postgresql
+  apt: pkg=postgresql state=present
+  become: yes
+  become_method: su
+  environment:
+    LANG: "fr_FR.UTF-8"
+    LC_ALL: "fr_FR.UTF-8"
+    LC_CTYPE: "fr_FR.UTF-8"
+    LANGUAGE: "fr_FR.UTF-8"
+
+- name: Install psycopg2 package
+  apt: pkg=python-psycopg2 state=present
+  become: yes
+  become_method: su
+
+- name: Start postgresql service
+  service: state=started name=postgresql
+  become: yes
+  become_method: su
