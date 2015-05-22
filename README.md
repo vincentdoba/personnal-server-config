@@ -49,8 +49,6 @@ yoursite_hostname: "yoursite.cedeela.fr" # my new site about manatees
 ```yaml
 ---
 - include: yoursite.yml
-  tags:
-    - yoursite
 ```
 * create a file *playbook/roles/yoursite/templates/virtual_host_config*, that will contains nginx virtual host configuration for your site. Below the most default nginx configuration :
 ```
@@ -105,5 +103,7 @@ dependencies:
 
 * add the following line to *playbook/site.yml*, in section *roles* :
 ```yaml
-- yoursite
+- role: yoursite
+  tags:
+    - yoursite
 ```
