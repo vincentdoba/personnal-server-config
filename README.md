@@ -11,19 +11,19 @@ ssh vincent@server 'bash -s' < init.sh
 command to launch ansible : 
 
 ```bash
-ansible-playbook -i playbook/inventories/test playbook/site.yml --ask-su-pass
+ansible-playbook -i playbook/inventories/test playbook/site.yml --ask-su-pass --ask-vault-pass
 ```
 
 command to launch ansible at a special task
 
 ```bash
-ansible-playbook -i playbook/inventories/test playbook/site.yml --ask-su-pass --start-at-task="My Task Name"
+ansible-playbook -i playbook/inventories/test playbook/site.yml --ask-su-pass --ask-vault-pass --start-at-task="My Task Name"
 ```
 
 command to launch ansible at a special tag
 
 ```bash
-ansible-playbook -i playbook/inventories/test playbook/site.yml --ask-su-pass --tags="My tag name"
+ansible-playbook -i playbook/inventories/test playbook/site.yml --ask-su-pass --ask-vault-pass --tags="My tag name"
 ```
 
 **Note :** each role has its own tags, which is the name of the role
@@ -32,6 +32,10 @@ ansible-playbook -i playbook/inventories/test playbook/site.yml --ask-su-pass --
 
 ### Setup hostname
 
+* open file *playbook/vars/common.yml* with ansible vault :
+```bash
+ansible-vault edit playbook/vars/common.yml
+```
 * add site hostname in file *playbook/vars/common.yml*, for instance : 
 ```yaml
 yoursite_hostname: "yoursite.cedeela.fr" # my new site about manatees
