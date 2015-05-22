@@ -1,4 +1,2 @@
 ---
 - include: postgresql.yml
-  tags:
-    - postgresql

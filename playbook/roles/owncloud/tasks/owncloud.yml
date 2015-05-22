@@ -1,6 +1,6 @@
 ---
 - name: Create owncloud directory
-  file: path=/home/sites/owncloud state=directory recurse=yes owner=root group=www-data mode=0750
+  file: path={{ owncloud_root_directory }} state=directory recurse=yes owner=root group=www-data mode={{ owncloud_directory_permission }}
   become: yes
   become_method: su
 
@@ -10,26 +10,26 @@
   become_method: su
  
 - name: Extract owncloud
-  unarchive: src=/home/commons/downloads/owncloud-{{ owncloud_version }}.tar.bz2 dest=/home/sites/owncloud
+  unarchive: src=/home/commons/downloads/owncloud-{{ owncloud_version }}.tar.bz2 dest={{ owncloud_root_directory }}
   become: yes
   become_method: su
 
 
 - name: Setup owncloud directories owner
-  file: path={{ item }} state=directory recurse=yes owner=www-data group=www-data mode=0750
+  file: path={{ item }} state=directory recurse=yes owner=www-data group=www-data mode={{ owncloud_directory_permission }}
   become: yes
   become_method: su
   with_items:
-    - /home/sites/owncloud/apps
-    - /home/sites/owncloud/config
-    - /home/sites/owncloud/data
-    - /home/sites/owncloud/themes
+    - "{{ owncloud_root_directory }}/apps"
+    - "{{ owncloud_root_directory }}/config"
+    - "{{ owncloud_root_directory }}/data"
+    - "{{ owncloud_root_directory }}/themes"
 
 - name: Change owner on htaccess files
-  file: path={{ item }} state=file owner=root group=www-data mode=0644
+  file: path={{ item }} state=file owner=root group=www-data mode={{ owncloud_file_permission }}
   become: yes
   become_method: su
   with_items:
-    - /home/sites/owncloud/.htaccess
-    - /home/sites/owncloud/data/.htaccess
+    - "{{ owncloud_root_directory }}/.htaccess"
+    - "{{ owncloud_root_directory }}/data/.htaccess"
 

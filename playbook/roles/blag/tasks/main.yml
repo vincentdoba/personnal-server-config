@@ -1,4 +1,2 @@
 ---
 - include: blag.yml 
-  tags:
-    - blag

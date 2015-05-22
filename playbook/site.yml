@@ -4,10 +4,24 @@
   vars_files:
     - "vars/common.yml"
   roles:
-    - commons
-    - vincent
-    - nginx
-    - postgresql
-    - blag
-    - roundcube
-    - owncloud
+    - role: commons
+      tags: 
+        - commons
+    - role: vincent
+      tags:
+        - vincent
+    - role: nginx
+      tags:
+        - nginx
+    - role: postgresql
+      tags:
+        - postgresql
+    - role: blag
+      tags:
+        - blag
+    - role: roundcube
+      tags:
+        - roundcube
+    - role: owncloud
+      tags:
+        - owncloud
