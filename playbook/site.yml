@@ -9,9 +9,9 @@
     - role: commons
       tags: 
         - commons
-    - role: vincent
+    - role: users
       tags:
-        - vincent
+        - users
     - role: nginx
       tags:
         - nginx
