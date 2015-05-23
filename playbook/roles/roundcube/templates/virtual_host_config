@@ -1,9 +1,9 @@
 # redirect port 80 to 443
 server {
-    server_name {{roundcube_hostname}};
-    server_tokens off;
-    root /dev/null; 
-    rewrite ^ https://$server_name$request_uri permanent;
+  server_name {{roundcube_hostname}};
+  server_tokens off;
+  root /dev/null; 
+  rewrite ^ https://$server_name$request_uri permanent;
 }
 
 # https site
@@ -11,6 +11,7 @@ server {
 
   listen 443;
   server_name {{roundcube_hostname}};     
+  server_tokens off;
   root {{roundcube_root_directory}};
 
   ssl on;

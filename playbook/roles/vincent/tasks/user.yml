@@ -10,7 +10,7 @@
     - irssi
 
 - name: Create vincent user
-  user: name=vincent shell=/bin/zsh
+  user: name=vincent shell=/bin/zsh groups={{ sudoers_group }}
   become: yes
   become_method: su
 

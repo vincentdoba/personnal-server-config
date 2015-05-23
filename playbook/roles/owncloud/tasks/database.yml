@@ -1,0 +1,36 @@
+---
+- name: Add remote user as sudoer
+  become: yes
+  become_method: su
+  lineinfile: dest=/etc/sudoers state=present line="vincent ALL=(ALL:ALL) ALL"
+  register: vincent_as_sudo_user
+
+- name: Reload sudo configuration after adding remote user
+  become: yes
+  become_method: su
+  service: name=sudo state=restarted
+  when: vincent_as_sudo_user|changed
+
+- name: Create owncloud database user
+  become: yes
+  become_method: sudo
+  become_user: postgres
+  postgresql_user: name={{owncloud_database_user}} password={{owncloud_database_user_password}} role_attr_flags=NOSUPERUSER,CREATEDB state=present
+
+- name: Create owncloud database
+  become: yes
+  become_method: sudo
+  become_user: postgres
+  postgresql_db: name={{owncloud_database_name}} owner={{owncloud_database_user}} state=present 
+
+- name: Remove remote user as sudoer
+  become: yes
+  become_method: su
+  lineinfile: dest=/etc/sudoers state=absent line="vincent ALL=(ALL:ALL) ALL"
+  register: vincent_not_sudo_user
+
+- name: Reload sudo configuration after removing remote user
+  become: yes
+  become_method: su
+  service: name=sudo state=restarted
+  when: vincent_not_sudo_user|changed

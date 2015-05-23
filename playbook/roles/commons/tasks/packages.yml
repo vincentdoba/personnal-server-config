@@ -25,6 +25,8 @@
     - exim4
     - exim4-daemon-light
     - exim4-daemon-heavy
+    - apache2-bin
+    - apache2-data
 
 - name: Install pip
   easy_install: name=pip

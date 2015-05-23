@@ -1,5 +1,5 @@
 ---
 dependencies:
-  - nginx
   - commons
+  - nginx
   - postgresql
