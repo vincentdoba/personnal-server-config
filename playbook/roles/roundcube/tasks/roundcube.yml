@@ -7,13 +7,14 @@
     - php5-sqlite
     - php5-mcrypt
     - php5-intl 
+    - php5-fpm
 
 - name: Create rouncube directory
   file: path={{ roundcube_root_directory }} state=directory recurse=yes owner=www-data group=www-data mode={{ roundcube_directory_permission }}
 
 # TODO change it with generation of site
 - name: Copy temporary roundcube index file
-  copy: dest={{ roundcube_root_directory }}/index.html src=index.html owner=www-data group=www-data mode={{ roundcube_file_permission }}
+  copy: dest={{ roundcube_root_directory }}/index.php src=index owner=www-data group=www-data mode={{ roundcube_file_permission }}
 
 - name: Setup roundcube certificates
   command: openssl req -new -nodes -x509 -subj "/C=FR/ST=Paris/L=Paris/O=IT/CN={{ roundcube_hostname }}" -days {{certificate_validity_period_in_days}} -keyout /etc/nginx/ssl/roundcube_server.key -out /etc/nginx/ssl/roundcube_server.crt -extensions v3_ca creates=/etc/nginx/ssl/roundcube_server.crt

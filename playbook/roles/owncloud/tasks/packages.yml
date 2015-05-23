@@ -11,3 +11,4 @@
     - php5-json
     - php5-curl
     - php5-imagick
+    - php5-fpm
