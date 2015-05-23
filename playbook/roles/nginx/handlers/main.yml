@@ -1,5 +1,6 @@
 ---
 - name: Reload nginx
   service: name=nginx state=reloaded
-  become: yes
-  become_method: su
+
+- name: Reload php-fpm
+  service: name=php5-fpm state=reloaded
