@@ -1,6 +1,8 @@
 ---
 - hosts: servers
   remote_user: vincent
+  become: yes
+  become_method: su
   vars_files:
     - "vars/common.yml"
   roles:

@@ -7,5 +7,3 @@
     - php5-pgsql
     - php5-mcrypt
     - php5-intl 
-  become: yes
-  become_method: su

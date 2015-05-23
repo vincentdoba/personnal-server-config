@@ -1,16 +1,10 @@
 ---
 - name: Ensure sudo is present
   apt: name=sudo state=present
-  become: yes
-  become_method: su
 
 - name: Ensure sudoers group is present
   group: name={{ sudoers_group }}
-  become: yes
-  become_method: su
 
 - name: Setup sudoers configuration
   template: src=sudoers dest=/etc/sudoers owner=root group=root mode={{ sudoers_file_permission }} 
-  become: yes
-  become_method: su
   notify: Restart sudo

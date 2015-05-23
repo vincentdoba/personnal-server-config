@@ -1,5 +1,3 @@
 ---
 - name: Create downloads directory
   file: path=/home/commons/downloads state=directory recurse=yes owner=root group=root mode=0750
-  become: yes
-  become_method: su

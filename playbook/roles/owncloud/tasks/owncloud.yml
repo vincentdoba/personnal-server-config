@@ -1,26 +1,18 @@
 ---
 - name: Create owncloud directory
   file: path={{ owncloud_root_directory }} state=directory recurse=yes owner=root group=www-data mode={{ owncloud_directory_permission }}
-  become: yes
-  become_method: su
 
 - name: Download owncloud
   get_url: url=https://download.owncloud.org/community/owncloud-{{ owncloud_version }}.tar.bz2 dest=/home/commons/downloads
-  become: yes
-  become_method: su
   register: owncloud_has_been_downloaded
  
 - name: Extract owncloud
   unarchive: src=/home/commons/downloads/owncloud-{{ owncloud_version }}.tar.bz2 dest={{ owncloud_root_directory }} copy=no
-  become: yes
-  become_method: su
   when: owncloud_has_been_downloaded|changed
 
 
 - name: Setup owncloud directories owner
   file: path={{ item }} state=directory recurse=yes owner=www-data group=www-data mode={{ owncloud_directory_permission }}
-  become: yes
-  become_method: su
   with_items:
     - "{{ owncloud_root_directory }}/apps"
     - "{{ owncloud_root_directory }}/config"
