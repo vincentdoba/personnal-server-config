@@ -13,7 +13,7 @@ server {
 server {
   listen 443;
   server_name {{owncloud_hostname}};
-  root /home/sites/owncloud;
+  root {{owncloud_root_directory}};
 
   ssl on;
   ssl_certificate ssl/owncloud_server.crt;

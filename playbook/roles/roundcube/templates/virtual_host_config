@@ -11,7 +11,7 @@ server {
 
   listen 443;
   server_name {{roundcube_hostname}};     
-  root /home/sites/roundcube;
+  root {{roundcube_root_directory}};
 
   ssl on;
   ssl_certificate     ssl/roundcube_server.crt;
