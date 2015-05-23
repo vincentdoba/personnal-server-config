@@ -3,7 +3,7 @@
   apt: pkg=python-pycurl
 
 - name: Setup key for nginx repository 
-  apt_key: url=http://nginx.org/keys/nginx_signing.key state=present
+  apt_key: id=7BD9BF62 url=http://nginx.org/keys/nginx_signing.key state=present
 
 - name: Add nginx latest version repository
   apt_repository: repo="deb http://nginx.org/packages/debian/ jessie nginx"
