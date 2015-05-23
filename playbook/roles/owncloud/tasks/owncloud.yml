@@ -4,12 +4,9 @@
 
 - name: Download owncloud
   get_url: url=https://download.owncloud.org/community/owncloud-{{ owncloud_version }}.tar.bz2 dest=/home/commons/downloads/owncloud-{{ owncloud_version }}.tar.bz2
-  register: owncloud_has_been_downloaded
  
 - name: Extract owncloud
-  unarchive: src=/home/commons/downloads/owncloud-{{ owncloud_version }}.tar.bz2 dest={{ owncloud_root_directory }} copy=no
-  when: owncloud_has_been_downloaded|changed
-
+  unarchive: src=/home/commons/downloads/owncloud-{{ owncloud_version }}.tar.bz2 dest={{ websites_directory }} owner=www-data group=www-data copy=no
 
 - name: Setup owncloud directories owner
   file: path={{ item }} state=directory recurse=yes owner=www-data group=www-data mode={{ owncloud_directory_permission }}
@@ -18,3 +15,10 @@
     - "{{ owncloud_root_directory }}/config"
     - "{{ owncloud_root_directory }}/data"
     - "{{ owncloud_root_directory }}/themes"
+
+- name: Change owner on owncloud htaccess files
+  file: path={{ item }} state=file owner=root group=www-data mode={{ owncloud_file_permission }}
+  become: yes
+  become_method: su
+  with_items:
+    - "{{ owncloud_root_directory }}/.htaccess"

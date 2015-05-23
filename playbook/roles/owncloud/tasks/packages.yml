@@ -7,3 +7,7 @@
     - php5-pgsql
     - php5-mcrypt
     - php5-intl 
+    - php5-gd
+    - php5-json
+    - php5-curl
+    - php5-imagick
