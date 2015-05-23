@@ -12,6 +12,7 @@ server {
 
 server {
   listen 443;
+  server_tokens off;
   server_name {{owncloud_hostname}};
   root {{owncloud_root_directory}};
 
