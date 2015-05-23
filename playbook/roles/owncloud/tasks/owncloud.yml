@@ -3,7 +3,7 @@
   file: path={{ owncloud_root_directory }} state=directory recurse=yes owner=root group=www-data mode={{ owncloud_directory_permission }}
 
 - name: Download owncloud
-  get_url: url=https://download.owncloud.org/community/owncloud-{{ owncloud_version }}.tar.bz2 dest=/home/commons/downloads
+  get_url: url=https://download.owncloud.org/community/owncloud-{{ owncloud_version }}.tar.bz2 dest=/home/commons/downloads/owncloud-{{ owncloud_version }}.tar.bz2
   register: owncloud_has_been_downloaded
  
 - name: Extract owncloud
