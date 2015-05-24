@@ -28,6 +28,25 @@ ansible-playbook -i playbook/inventories/test playbook/site.yml --ask-su-pass --
 
 **Note :** each role has its own tags, which is the name of the role
 
+## Add an user
+
+* Create a file *playbook/roles/users/tasks/username.yml*
+* Add following line to *playbook/roles/users/tasks/main.yml*
+```yaml
+- include: username.yml
+  tags:
+    - username
+```
+* You can put your personnal config files in *playbook/roles/users/files/username*
+
+### Run ansible for your user
+
+By running the following command, you will run only your own user configuration
+
+```bash
+ansible-playbook -i playbook/inventories/test playbook/site.yml --ask-su-pass --ask-vault-pass --tags="username"
+```
+
 ## Add a site
 
 ### Setup hostname
