@@ -12,3 +12,7 @@
 - name: Setup php fpm config file
   copy: dest=/etc/php5/fpm/php-fpm.conf src=fpm_configuration_file owner=root group=root mode=0644
   notify: Reload php-fpm
+
+- name: Setup php fpm webserver config file
+  copy: dest=/etc/php5/fpm/pool.d/www.conf src=fpm_webserver_configuration_file owner=root group=root mode=0644
+  notify: Reload php-fpm
