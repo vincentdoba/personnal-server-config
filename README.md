@@ -17,13 +17,18 @@ ssh-copy-id remote_user@server
 command to launch ansible : 
 
 ```bash
-ansible-playbook -i playbook/inventories/test playbook/site.yml -u remote_user --ask-su-pass --ask-vault-pass
+ansible-playbook -i inventories/test site.yml -u remote_user --ask-su-pass --ask-vault-pass
 ```
 
 ### Using connection with ssh password
 
+* Install sshpass, for instance on Archlinux :
+```
+pacman -Sy sshpass
+```
+* play ansible configuration on remote host :
 ```bash
-ansible-playbook -i playbook/inventories/test playbook/site.yml -u remote_user --ask-pass --ask-su-pass --ask-vault-pass
+ansible-playbook -i inventories/test site.yml -u remote_user --ask-pass --ask-su-pass --ask-vault-pass
 ```
 
 ### Special commands
@@ -33,59 +38,59 @@ ansible-playbook -i playbook/inventories/test playbook/site.yml -u remote_user -
 command to launch ansible at a special task
 
 ```bash
-ansible-playbook -i playbook/inventories/test playbook/site.yml -u remote_user --ask-su-pass --ask-vault-pass --start-at-task="My Task Name"
+ansible-playbook -i inventories/test site.yml -u remote_user --ask-su-pass --ask-vault-pass --start-at-task="My Task Name"
 ```
 
 command to launch ansible at a special tag
 
 ```bash
-ansible-playbook -i playbook/inventories/test playbook/site.yml -u remote-user --ask-su-pass --ask-vault-pass --tags="My tag name"
+ansible-playbook -i inventories/test site.yml -u remote-user --ask-su-pass --ask-vault-pass --tags="My tag name"
 ```
 
 **Note :** each role has its own tags, which is the name of the role
 
 ## Add an user
 
-* Create a file *playbook/roles/users/tasks/username.yml*
-* Add following line to *playbook/roles/users/tasks/main.yml*
+* Create a file *roles/users/tasks/username.yml*
+* Add following line to *roles/users/tasks/main.yml*
 ```yaml
 - include: username.yml
   tags:
     - username
 ```
-* You can put your personnal config files in *playbook/roles/users/files/username*
+* You can put your personnal config files in *roles/users/files/username*
 
 ### Run ansible for your user
 
 By running the following command, you will run only your own user configuration
 
 ```bash
-ansible-playbook -i playbook/inventories/test playbook/site.yml --ask-su-pass --ask-vault-pass --tags="username"
+ansible-playbook -i inventories/test site.yml --ask-su-pass --ask-vault-pass --tags="username"
 ```
 
 ## Add a site
 
 ### Setup hostname
 
-* open file *playbook/vars/common.yml* with ansible vault :
+* open file *vars/common.yml* with ansible vault :
 ```bash
-ansible-vault edit playbook/vars/common.yml
+ansible-vault edit vars/common.yml
 ```
-* add site hostname in file *playbook/vars/common.yml*, for instance : 
+* add site hostname in file *vars/common.yml*, for instance : 
 ```yaml
 yoursite_hostname: "yoursite.cedeela.fr" # my new site about manatees
 ```
 
 ### Create ansible tasks and templates
 
-* create a directory *playbook/roles/yoursite*
-* create a directory *playbook/roles/yoursite/tasks*
-* create a file *playbook/roles/yoursite/tasks/main.yml* containing the following lines :
+* create a directory *roles/yoursite*
+* create a directory *roles/yoursite/tasks*
+* create a file *roles/yoursite/tasks/main.yml* containing the following lines :
 ```yaml
 ---
 - include: yoursite.yml
 ```
-* create a file *playbook/roles/yoursite/templates/virtual_host_config*, that will contains nginx virtual host configuration for your site. Below the most default nginx configuration :
+* create a file *roles/yoursite/templates/virtual_host_config*, that will contains nginx virtual host configuration for your site. Below the most default nginx configuration :
 ```
 server {
   listen 80;
@@ -94,15 +99,15 @@ server {
   server_tokens off;
 }
 ```
-* create a file *playbook/roles/yoursite/tasks/yoursite.yml*
-* in the file *playbook/roles/yoursite/tasks/yoursite.yml*, add the task to create site root :
+* create a file *roles/yoursite/tasks/yoursite.yml*
+* in the file *roles/yoursite/tasks/yoursite.yml*, add the task to create site root :
 ```yaml
 - name: Create yoursite directory
   file: path=/home/sites/yoursite state=directory recurse=yes owner=www-data group=www-data mode=0755
   become: yes
   become_method: su
 ```
-* in the file *playbook/roles/yoursite/tasks/yoursite.yml*, add the following tasks at the end :
+* in the file *roles/yoursite/tasks/yoursite.yml*, add the following tasks at the end :
 ```yaml
 - name: Create yoursite virtual host
   template: src=virtual_host_config dest=/etc/nginx/sites-available/yoursite
@@ -124,9 +129,9 @@ server {
 
 ### Add dependencies
 
-* create a directory *playbook/roles/yoursite/meta*
-* create a file *playbook/roles/yoursite/meta/main.yml*
-* add the following lines in file *playbook/roles/yoursite/meta/main.yml*
+* create a directory *roles/yoursite/meta*
+* create a file *roles/yoursite/meta/main.yml*
+* add the following lines in file *roles/yoursite/meta/main.yml*
 ```yaml
 ---
 dependencies:
@@ -136,7 +141,7 @@ dependencies:
 
 ### Activate your site in ansible run
 
-* add the following line to *playbook/site.yml*, in section *roles* :
+* add the following line to *site.yml*, in section *roles* :
 ```yaml
 - role: yoursite
   tags:
