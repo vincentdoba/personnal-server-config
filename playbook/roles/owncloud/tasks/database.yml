@@ -1,11 +1,11 @@
 ---
 - name: Add remote user as sudoer
-  lineinfile: dest=/etc/sudoers state=present line="vincent ALL=(ALL:ALL) ALL"
-  register: vincent_as_sudo_user
+  lineinfile: dest=/etc/sudoers state=present line="{{remote_user}} ALL=(ALL:ALL) ALL"
+  register: remote_user_as_sudo_user
 
 - name: Reload sudo configuration after adding remote user
   service: name=sudo state=restarted
-  when: vincent_as_sudo_user|changed
+  when: remote_user_as_sudo_user|changed
 
 - name: Create owncloud database user
   become: yes
@@ -20,9 +20,9 @@
   postgresql_db: name={{owncloud_database_name}} owner={{owncloud_database_user}} state=present 
 
 - name: Remove remote user as sudoer
-  lineinfile: dest=/etc/sudoers state=absent line="vincent ALL=(ALL:ALL) ALL"
-  register: vincent_not_sudo_user
+  lineinfile: dest=/etc/sudoers state=absent line="{{remote_user}} ALL=(ALL:ALL) ALL"
+  register: remote_user_not_sudo_user
 
 - name: Reload sudo configuration after removing remote user
   service: name=sudo state=restarted
-  when: vincent_not_sudo_user|changed
+  when: remote_user_not_sudo_user|changed
