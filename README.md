@@ -2,10 +2,10 @@
 
 **Note : deployment of this server was tested on a freshly installed debian jessie (debian 8)**
 
-command to copy public key to vincent .ssh file
+command to copy public key to remote user .ssh file
 
 ```bash
-ssh-copy-id vincent@server
+ssh-copy-id remote_user@server
 ```
 
 command to launch ansible : 
