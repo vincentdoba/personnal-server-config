@@ -1,6 +1,5 @@
 ---
 - hosts: servers
-  remote_user: "{{remote_user}}"
   become: yes
   become_method: su
   vars_files:

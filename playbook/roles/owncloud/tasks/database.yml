@@ -1,6 +1,6 @@
 ---
 - name: Add remote user as sudoer
-  lineinfile: dest=/etc/sudoers state=present line="{{remote_user}} ALL=(ALL:ALL) ALL"
+  lineinfile: dest=/etc/sudoers state=present line="{{ansible_ssh_user}} ALL=(ALL:ALL) ALL"
   register: remote_user_as_sudo_user
 
 - name: Reload sudo configuration after adding remote user
@@ -20,7 +20,7 @@
   postgresql_db: name={{owncloud_database_name}} owner={{owncloud_database_user}} state=present 
 
 - name: Remove remote user as sudoer
-  lineinfile: dest=/etc/sudoers state=absent line="{{remote_user}} ALL=(ALL:ALL) ALL"
+  lineinfile: dest=/etc/sudoers state=absent line="{{ansible_ssh_user}} ALL=(ALL:ALL) ALL"
   register: remote_user_not_sudo_user
 
 - name: Reload sudo configuration after removing remote user
