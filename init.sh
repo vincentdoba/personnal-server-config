@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-mkdir -p /home/vincent/.ssh
-echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQClpd6+i11UuNqCSlcc4oIDrHVRXzZiZIDFX+7tbAP0dya0+/lUwwbun9XA/T6Fe7Dmg/EeLJrveYlZWqn9nOAehNa2i1JIQkPQUXDjJ/iP8CNTkQKlaz6m849/QQiyjTCe0sSgrnRprUsX+wzdeyujXe4IiUZ4rtI9k1vsGnocwyadqoh46lhz1brsnzS5QHXsD3EFkf+6AaJOqXagO64kHdyrKn8v+M4XbUDqJ0MzHLHEPt8J9Ufw1LdSl0CuJ3KUuIKbsb+Ych0xAqYnsxq5M0iGbTuE8QGKXS+8jg2XZ0UBWeJVhS84l8P6EE1Ah8W3YnECReIE+UVrKn2xkT1J vincent@blue" > /home/vincent/.ssh/authorized_keys
