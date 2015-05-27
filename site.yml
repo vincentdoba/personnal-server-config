@@ -26,3 +26,6 @@
     - role: owncloud
       tags:
         - owncloud
+    - role: jenkins
+      tags:
+        - jenkins

@@ -1,4 +1,7 @@
 ---
+- name: Add backports repository
+  apt_repository: repo="deb {{backport_uri}} {{debian_version_name}}-backports main contrib non-free" state=present update_cache=yes
+
 - name: Upgrade to latest packages
   apt: upgrade=full
 

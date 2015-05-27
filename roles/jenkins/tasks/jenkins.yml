@@ -1,0 +1,6 @@
+---
+- name: Install all jenkins necessary packages
+  apt: pkg={{ item }} state=present default_release={{ debian_version_name }}-backports
+  with_items:
+    - openjdk-8-jre
+    - openjdk-8-jdk
