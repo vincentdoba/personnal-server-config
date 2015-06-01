@@ -1,0 +1,21 @@
+server {
+  listen 80;
+  server_tokens off;
+  server_name {{jenkins_hostname}};
+  rewrite ^ https://$server_name$request_uri permanent;
+}
+
+server {
+  listen 443;
+  server_tokens off;
+  server_name {{jenkins_hostname}};
+
+  ssl on;
+  ssl_certificate ssl/jenkins_server.crt;
+  ssl_certificate_key ssl/jenkins_server.key;
+
+  location / {
+    proxy_pass       http://localhost:8080;
+  }
+
+}

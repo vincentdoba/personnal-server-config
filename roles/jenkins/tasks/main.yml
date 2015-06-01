@@ -1,2 +1,3 @@
 ---
 - include: jenkins.yml
+- include: web.yml
