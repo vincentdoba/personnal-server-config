@@ -1,0 +1,4 @@
+---
+- name: Download openstmpd package
+  get_url: url=http://ftp.fr.debian.org/debian/pool/main/o/opensmtpd/opensmtpd_{{opensmtpd_version}}_amd64.deb dest=/home/commons/downloads/opensmtpd_{{opensmtpd_version}}_amd64.deb
+ 

@@ -20,6 +20,9 @@
     - role: blag
       tags:
         - blag
+    - role: mail
+      tags:
+        - mail
     - role: roundcube
       tags:
         - roundcube
