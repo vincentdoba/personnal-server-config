@@ -32,3 +32,6 @@
     - role: jenkins
       tags:
         - jenkins
+    - role: gitlab
+      tags: 
+        - gitlab

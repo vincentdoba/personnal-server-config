@@ -1,0 +1,5 @@
+---
+- include: packages.yml
+- include: database.yml
+- include: gitlab.yml
+- include: web.yml
