@@ -1,11 +1,9 @@
 ---
-- name: Add remote user as sudoer
+- name: Add remote user as sudoer for owncloud
   lineinfile: dest=/etc/sudoers state=present line="{{ansible_ssh_user}} ALL=(ALL:ALL) ALL"
-  register: remote_user_as_sudo_user
 
-- name: Reload sudo configuration after adding remote user
+- name: Reload sudo configuration after adding remote user for owncloud
   service: name=sudo state=restarted
-  when: remote_user_as_sudo_user|changed
 
 - name: Create owncloud database user
   become: yes
@@ -19,10 +17,8 @@
   become_user: postgres
   postgresql_db: name={{owncloud_database_name}} owner={{owncloud_database_user}} state=present 
 
-- name: Remove remote user as sudoer
+- name: Remove remote user as sudoer for owncloud
   lineinfile: dest=/etc/sudoers state=absent line="{{ansible_ssh_user}} ALL=(ALL:ALL) ALL"
-  register: remote_user_not_sudo_user
 
-- name: Reload sudo configuration after removing remote user
+- name: Reload sudo configuration after removing remote user for owncloud
   service: name=sudo state=restarted
-  when: remote_user_not_sudo_user|changed
