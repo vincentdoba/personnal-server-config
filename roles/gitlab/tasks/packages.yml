@@ -8,7 +8,7 @@
   apt_key: id=E15E78F4 url=https://packages.gitlab.com/gpg.key state=present
 
 - name: Add gitlab latest version repository
-  apt_repository: repo="deb https://packages.gitlab.com/gitlab/gitlab-ce/debian/ jessie main"
+  apt_repository: repo="deb https://packages.gitlab.com/gitlab/gitlab-ce/debian/ {{debian_version_name}} main"
 
 - name: Install gitlab package
   apt: pkg=gitlab-ce state=latest
