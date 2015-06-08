@@ -1,3 +1,6 @@
 ---
 - name: Setup gitlab configuration file
   template: src=gitlab_configuration_file dest=/etc/gitlab/gitlab.rb owner=root group=root mode={{gitlab_configuration_file_permission}}
+
+- name: Configure gitlab
+  shell: gitlab-ctl reconfigure
