@@ -1,0 +1,16 @@
+---
+- name: Install all phusion passenger necessary packages
+  apt: pkg={{ item }} state=present
+  with_items:
+    - apt-transport-https
+
+- name: Setup key for phusion passenger repository 
+  apt_key: keyserver=keyserver.ubuntu.com id=561F9B9CAC40B2F7
+
+- name: Add phusion passenger latest version repository
+  apt_repository: repo="deb https://oss-binaries.phusionpassenger.com/apt/passenger {{debian_version_name}} main"
+
+- name: Install phusion passenger
+  apt: pkg={{ item }} state=present
+  with_items:
+    - passenger
