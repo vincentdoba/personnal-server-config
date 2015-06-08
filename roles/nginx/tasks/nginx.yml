@@ -20,6 +20,7 @@
 
 - name: Create nginx main config
   copy: src=nginx.conf dest=/etc/nginx/nginx.conf
+  notify: Reload nginx
 
 - name: Create nginx mime type file
   copy: src=mime.types dest=/etc/nginx/mime.types
