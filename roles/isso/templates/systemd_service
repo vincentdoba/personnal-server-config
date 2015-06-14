@@ -1,0 +1,9 @@
+[Unit]
+Description=Isso Comment Server
+
+[Service]
+EnvironmentFile={{ isso_configuration_path }}
+ExecStart={{isso_root_directory}}/bin/isso -c {{ isso_configuration_path }}
+
+[Install]
+WantedBy=multi-user.target
