@@ -1,0 +1,4 @@
+supertab.vba: call delete('/home/simon/.vim/doc/supertab.txt')|call delete('/home/simon/.vim/plugin/supertab.vim')
+haskellmode-20090430.vba: call delete('/home/simon/.vim/compiler/ghc.vim')|call delete('/home/simon/.vim/ftplugin/haskell.vim')|call delete('/home/simon/.vim/ftplugin/haskell_doc.vim')|call delete('/home/simon/.vim/ftplugin/haskell_hpaste.vim')|call delete('/home/simon/.vim/autoload/haskellmode.vim')|call delete('/home/simon/.vim/doc/haskellmode.txt')
+zenburn.vba: call delete('/home/simon/.vim/colors/zenburn.vim')
+markdown-1.1.0.vba: call delete('/home/simon/.vim/ftdetect/markdown.vim')|call delete('/home/simon/.vim/snippets/markdown.snippets')|call delete('/home/simon/.vim/syntax/markdown.vim')

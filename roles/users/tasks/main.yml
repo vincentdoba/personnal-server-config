@@ -1,4 +1,7 @@
 ---
+- include: root.yml
+  tags:
+    - root
 - include: vincent.yml
   tags:
     - vincent

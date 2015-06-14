@@ -1,0 +1,208 @@
+" pour l'indentation de code
+set tabstop=2 " Number of spaces that a <Tab> in the file counts for.
+set expandtab " Use the appropriate number of spaces to insert a <Tab>.
+set shiftwidth=2 " Number of spaces to use for each step of (auto)indent.
+
+
+"personnalisation de la ligne de statut
+"set statusline=%F%m%r%h%w\ [format=%{&ff}]\ [type=%Y]\ [ascii=\%03.3b]\ [Line=%04l]\ [Col=%04v]\ [%p%%]\
+set statusline=%F%m%r%h%w\ format=%{&ff}\ %y\ %l,%v\ %p%%
+set laststatus=2
+
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
+
+
+" pour le code !
+filetype on
+filetype plugin on
+" plugins
+
+" souris
+set mouse=a
+
+"ajout d'une ligne colorée sur la ligne en cours
+"set cursorline
+"highlight CursorLine term=reverse cterm=reverse
+
+
+" fenetre de prévisualisation (omnicomplete) pas trop haute
+set previewheight=2
+
+" pour les fold
+" set nofoldenable
+set foldenable
+set foldmethod=indent
+"set foldmethod=marker
+set foldnestmax=2
+
+" pour le backspace
+set backspace=indent,eol,start
+
+set incsearch
+set hidden
+set modeline
+set nohlsearch
+"set ai
+
+set nonumber
+set autoindent smartindent
+
+" pour le collage
+set pastetoggle=<F4>
+
+" pour les couleurs
+syntax on
+" colorscheme torte slate delek zellner koehler
+colorscheme koehler
+set background=light
+
+" pour les backups
+set backupext=.autosave
+" set backup " pour une sauvegarde automatique
+
+"autorisation de remonter ou descendre d'une ligne avec les flèches gauche et
+"droite
+set whichwrap=b,s,<,>,[,]
+
+" lignes wrappées prises en compte dans les déplacements
+nmap <Up> gk
+nmap <Down> gj
+
+
+
+" recharge automatiquement .vimrc
+if has("autocmd")
+   autocmd! bufwritepost .vimrc source ~/.vimrc
+endif
+
+" pour les commands dans la statusline
+set showcmd
+
+"ouverture d'un fichier avec le curseur à la postion de la dernière édition
+function! s:CursorOldPosition()
+   if line("'\"") > 0 && line("'\"") <= line("$")
+       exe "normal g`\""
+   endif
+endfunction
+autocmd BufreadPost * silent! call s:CursorOldPosition()
+
+
+" sombres histoires de complétion...
+if has("autocmd") && exists("+omnifunc")
+	autocmd Filetype *
+		    \	if &omnifunc == "" |
+		    \		setlocal omnifunc=syntaxcomplete#Complete |
+		    \	endif
+endif
+au filetype html        set omnifunc=htmlcomplete#CompleteTags
+au filetype css         set omnifunc=csscomplete#CompleteCSS
+au filetype javascript  set omnifunc=javascriptcomplete#CompleteJS
+au filetype c           set omnifunc=ccomplete#Complete
+au filetype php         set omnifunc=phpcomplete#CompletePHP
+au filetype ruby        set omnifunc=rubycomplete#Complete
+au filetype sql         set omnifunc=sqlcomplete#Complete
+au filetype xml         set omnifunc=xmlcomplete#CompleteTags
+au filetype python      set omnifunc=pythoncomplete#Complete
+"au filetype python      imap <silent> <buffer> . .<C-X><C-O>
+"au filetype python      imap <silent> <expr> <buffer> <CR> pumvisible() ? "<CR><C-R>=(col('.')-1&&match(getline(line('.')), '\\.',
+"                             \ col('.')-2) == col('.')-2)?\"\<lt>C-X>\<lt>C-O>\":\"\"<CR>"
+"                             \ : "<CR>"
+" set nocp
+"set path=.,..,/usr/local/include,/usr/include
+
+"map <C-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+au filetype c++     :nmap <buffer><F11> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>
+au filetype c       :nmap <buffer><C-F11> :!ctags -R --fields=+iaS --extra=+q .<CR><CR>
+au filetype ocaml   :nmap <buffer><F11> :!otags -vi -r .<CR><CR>
+set tags=./tags,./TAGS,../TAGS,../tags,tags
+
+" pour les ctags avec le cppomnicomplete
+"map <F8> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+
+"config du cppomnicomplete
+let OmniCpp_SelectFirstItem = 2
+
+
+
+
+"définition du style d'affichage des signets
+sign define information text=>> linehl=Warning texthl=Error
+"Variable d'enregistrement des identifants de signets
+let s:signMarks     = {}
+"Variable d'enregistrement des sauts sur les signets
+let s:jumpMarks     = {}
+"fonction de marquage des signets
+function! MarkSign()
+   let filename = bufname(winbufnr(winnr()))
+   if (has_key(s:signMarks, filename))
+       let s:signMarks[filename] +=1
+   else
+       let s:signMarks[filename] = 1
+   endif
+   exe ':sign place' . s:signMarks[filename] . 'line=' . line('.')
+       ' name=information file=' . expand('%:p')
+endfunction
+
+
+" haskell
+"au Bufenter *.hs compiler ghc
+"au Bufenter *.hs :GHCReload
+
+let g:haddock_browser = "/home/simon/bin/chrome"
+let g:ghc="/usr/bin/ghc"
+
+" why syntax
+au Bufenter *.why set syntax=omlet
+" who syntax
+au Bufenter *.who set syntax=omlet
+"au BufRead,BufNewFile *.who set filetype=who
+"au! Syntax who source $HOME/.vim/syntax/who.vim
+
+" utilities
+nmap <F5>                   :make<CR>:cw<CR>
+nmap <F6>                   :shell<CR>
+nmap <C-F8>                 :TrinityToggleSourceExplorer<CR>
+" double click show type
+"au filetype ocaml           :nmap <2-LeftMouse> :call Ocaml_print_type("normal")<CR>
+au filetype ocaml           :map <buffer><F4>                    :call Ocaml_print_type("normal")<CR>
+au filetype ocaml           :vmap <buffer><F4>                   :call Ocaml_print_type("visual")<CR>
+
+" trailing spaces
+function! TrimWhiteSpace()
+  %s/\s*$//
+  ''
+endfunction
+
+
+" Show trailing whitepace and spaces before a tab:
+"highlight ExtraWhitespace ctermbg=darkgreen guibg=lightgreen
+"autocmd BufWinEnter * match ExtraWhitespace /\s\+$\| \+\ze\t\| \+/ 
+
+" hilight chars after the 80th column, and tabs characters
+"highlight TooLong ctermbg=yellow guibg=orange
+"match TooLong '\%>80v.\+'
+"highlight ThisIsTab ctermbg=yellow guibg=orange
+"match ThisIsTab '\t'
+
+
+" TODO :
+let g:tex_flavor='latex'
+
+
+" TODO : move it in a functions file
+function! AddFrame()
+  call append(line('.'),"\\end{frame}")
+  call append(line('.'),"\\begin{frame}{}")
+endfunction
+
+function! AddBlock()
+  let i=input("type de block > ")
+  call append(line('.')-1,"\\begin{" . i . "}")
+  call append(line('.'),"\\end{" . i . "}")
+endfunction
+
+au filetype tex   :nmap <C-f> :call AddFrame()<CR>
+au filetype tex   :nmap <C-n> :call AddBlock()<CR>
+
+" vim:foldmethod=marker
