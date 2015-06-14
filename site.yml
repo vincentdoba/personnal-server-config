@@ -20,6 +20,9 @@
     - role: blag
       tags:
         - blag
+    - role: isso
+      tags:
+        - isso
     - role: mail
       tags:
         - mail
