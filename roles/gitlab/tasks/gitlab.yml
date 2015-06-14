@@ -7,3 +7,6 @@
 
 - name: Configure gitlab
   shell: gitlab-ctl reconfigure
+
+- name: Initialize gitlab database
+  shell: yes yes | gitlab-rake gitlab:setup > /opt/gitlab/gitlab_database_initialization.log creates=/opt/gitlab/gitlab_database_initialization.log
