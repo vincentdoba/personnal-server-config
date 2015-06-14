@@ -8,6 +8,7 @@
     - php5-mcrypt
     - php5-intl 
     - php5-fpm
+    - sqlite3
 
 - name: Create rouncube directory
   file: path={{ roundcube_root_directory }} state=directory recurse=yes owner=www-data group=www-data mode={{ roundcube_directory_permission }}
