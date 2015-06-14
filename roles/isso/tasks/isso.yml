@@ -1,1 +1,3 @@
 ---
+- name: Create isso configuration file
+  template: src=isso_configuration dest={{ isso_configuration_path }}
