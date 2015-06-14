@@ -104,27 +104,19 @@ server {
 ```yaml
 - name: Create yoursite directory
   file: path=/home/sites/yoursite state=directory recurse=yes owner=www-data group=www-data mode=0755
-  become: yes
-  become_method: su
 ```
 * in the file *roles/yoursite/tasks/yoursite.yml*, add the following tasks at the end :
 ```yaml
 - name: Create yoursite virtual host
   template: src=virtual_host_config dest=/etc/nginx/sites-available/yoursite
   notify: Reload nginx
-  become: yes
-  become_method: su
 
 - name: Create yoursite link in site-enabled
   file: src=/etc/nginx/sites-available/yoursite state=link dest=/etc/nginx/sites-enabled/yoursite
   notify: Reload nginx
-  become: yes
-  become_method: su
 
 - name: Create line for yoursite in /etc/hosts
   lineinfile: dest=/etc/hosts line="127.0.0.1 {{ yoursite_hostname }}" insertafter="^127"
-  become: yes
-  become_method: su
 ```
 
 ### Add dependencies
