@@ -3,7 +3,8 @@ Description=Isso Comment Server
 
 [Service]
 EnvironmentFile={{ isso_configuration_path }}
-ExecStart={{isso_root_directory}}/bin/isso -c {{ isso_configuration_path }}
+ExecStart={{isso_root_directory}}/bin/isso -c {{ isso_configuration_path }} run
+ExecStop=-/sbin/start-stop-daemon --quiet --stop --signal QUIT --retry QUIT/5 --pidfile /var/run/isso.pid
 
 [Install]
 WantedBy=multi-user.target
