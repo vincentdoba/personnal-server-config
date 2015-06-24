@@ -1,6 +1,8 @@
 ---
 - name: Create isso configuration file
   template: src=isso_configuration dest={{ isso_configuration_path }}
+  notify: Restart isso
 
 - name: Create isso systemd service
   template: src=systemd_service dest=/lib/systemd/system/isso.service owner=root group=root mode=0644
+  notify: Restart isso

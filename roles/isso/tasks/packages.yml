@@ -10,3 +10,4 @@
 
 - name: Install isso
   pip: name=isso virtualenv={{ isso_root_directory }}
+  notify: Restart isso
