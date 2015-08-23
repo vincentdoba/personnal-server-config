@@ -22,8 +22,11 @@
 - name: Copy zsh specific configuration files to vincent home
   copy: dest=/home/vincent/.zsh src=vincent/zsh/ owner=vincent group=vincent mode=0644
 
-- name: Copy irssi configuration files to vincent home
+- name: Copy irssi theme files to vincent home
   copy: dest=/home/vincent/.irssi src=vincent/irssi/ owner=vincent group=vincent mode=0644
+
+- name: Copy irssi configuration file to vincent home
+  template: dest=/home/vincent/.irssi/config src=vincent/irssi_config owner=vincent group=vincent mode=0644
 
 - name: Copy screenrc file configuration to vincent home
   copy: dest=/home/vincent/.screenrc src=vincent/screenrc owner=vincent group=vincent mode=0644
