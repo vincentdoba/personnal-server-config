@@ -37,7 +37,7 @@ channels = (
   { name = "#pica"; chatnet = "rezosup"; autojoin = "Yes"; },
   { name = "#sac"; chatnet = "rezosup"; autojoin = "Yes"; },
   { name = "#ecn"; chatnet = "freenode"; autojoin = "Yes"; }
-  { name = "#arch-fr-off"; chatnet = "freenode"; autojoin = "Yes"; }
+  { name = "#arch-fr-free"; chatnet = "freenode"; autojoin = "Yes"; }
 );
 
 aliases = {
