@@ -30,10 +30,3 @@
 
 - name: Copy screenrc file configuration to vincent home
   copy: dest=/home/vincent/.screenrc src=vincent/screenrc owner=vincent group=vincent mode=0644
-
-- name: Set authorized keys for vincent
-  authorized_key: user=vincent
-                   key="{{ item }}"
-  with_file:
-  - vincent/public_keys/blue
-  - vincent/public_keys/heilong
