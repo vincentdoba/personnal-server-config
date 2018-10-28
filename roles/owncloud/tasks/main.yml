@@ -1,5 +1,0 @@
----
-- include: packages.yml
-- include: database.yml
-- include: owncloud.yml
-- include: web.yml

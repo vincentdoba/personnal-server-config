@@ -1,3 +1,0 @@
----
-- name: Restart isso
-  service: name=isso state=restarted
