@@ -17,7 +17,7 @@ ssh-copy-id remote_user@server
 command to launch ansible : 
 
 ```bash
-ansible-playbook -i inventories/test site.yml -u remote_user --ask-su-pass --ask-vault-pass
+ansible-playbook -i inventories/test site.yml -u remote_user --ask-become-pass --ask-vault-pass
 ```
 
 ### Using connection with ssh password
@@ -28,7 +28,7 @@ pacman -Sy sshpass
 ```
 * play ansible configuration on remote host :
 ```bash
-ansible-playbook -i inventories/test site.yml -u remote_user --ask-pass --ask-su-pass --ask-vault-pass
+ansible-playbook -i inventories/test site.yml -u remote_user --ask-pass --ask-become-pass --ask-vault-pass
 ```
 
 ### Special commands
@@ -38,13 +38,13 @@ ansible-playbook -i inventories/test site.yml -u remote_user --ask-pass --ask-su
 command to launch ansible at a special task
 
 ```bash
-ansible-playbook -i inventories/test site.yml -u remote_user --ask-su-pass --ask-vault-pass --start-at-task="My Task Name"
+ansible-playbook -i inventories/test site.yml -u remote_user --ask-become-pass --ask-vault-pass --start-at-task="My Task Name"
 ```
 
 command to launch ansible at a special tag
 
 ```bash
-ansible-playbook -i inventories/test site.yml -u remote-user --ask-su-pass --ask-vault-pass --tags="My tag name"
+ansible-playbook -i inventories/test site.yml -u remote-user --ask-become-pass --ask-vault-pass --tags="My tag name"
 ```
 
 **Note :** each role has its own tags, which is the name of the role
@@ -65,5 +65,5 @@ ansible-playbook -i inventories/test site.yml -u remote-user --ask-su-pass --ask
 By running the following command, you will run only your own user configuration
 
 ```bash
-ansible-playbook -i inventories/test site.yml --ask-su-pass --ask-vault-pass --tags="username"
+ansible-playbook -i inventories/test site.yml --ask-become-pass --ask-vault-pass --tags="username"
 ```
