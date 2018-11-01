@@ -1,11 +1,12 @@
 ---
 - name: "Install vincent useful packages : zsh, vim, irssi, screen."
-  apt: pkg={{ item }} state=present 
-  with_items:
-    - zsh
-    - screen
-    - vim
-    - irssi
+  apt:
+    name:
+      - zsh
+      - screen
+      - vim
+      - irssi
+    state: present
 
 - name: Create vincent user
   user: name=vincent shell=/bin/zsh groups={{ sudoers_group }}

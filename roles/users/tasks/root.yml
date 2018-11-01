@@ -1,9 +1,10 @@
 ---
 - name: "Install root useful packages"
-  apt: pkg={{ item }} state=present 
-  with_items:
-    - vim
-    - exuberant-ctags
+  apt:
+    name:
+      - vim
+      - exuberant-ctags
+    state: present
 
 - name: Copy vimrc file configuration to root home
   copy: dest=/root/.vimrc src=root/vimrc owner=root group=root mode=0644

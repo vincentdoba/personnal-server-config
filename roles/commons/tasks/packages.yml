@@ -6,24 +6,27 @@
   apt: upgrade=full
 
 - name: Install base packages
-  apt: name={{ item }} state=present
-  with_items:
-    - curl
-    - htop
-    - rsync
-    - tar
-    - git
-    - sudo
-    - python-setuptools
+  apt: 
+    name: 
+      - curl
+      - htop
+      - rsync
+      - tar
+      - git
+      - sudo
+      - python-setuptools
+    state: present
 
 - name: Remove unused packages
-  apt: name={{ item }} state=absent purge=yes
-  with_items:
-    - exim4
-    - exim4-daemon-light
-    - exim4-daemon-heavy
-    - apache2-bin
-    - apache2-data
+  apt:
+    name:
+      - exim4
+      - exim4-daemon-light
+      - exim4-daemon-heavy
+      - apache2-bin
+      - apache2-data
+    state: absent
+    purge: yes
 
 - name: Install pip
   easy_install: name=pip
