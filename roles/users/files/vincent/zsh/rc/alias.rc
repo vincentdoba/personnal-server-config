@@ -163,22 +163,6 @@ else
 	alias diff='diff -u'
 fi
 
-
-# pour le ssh rapide
-alias fkz="ssh simon@frankiz"
-alias salleinfo="ssh -Y simon.cruanes@ferrari"
-alias ldn="ssh simon@ldn"
-alias gwz="ssh simon@gwz"
-alias deiz="ssh simon@deiz"
-alias shrdlu="ssh simon@SHRDLU"
-alias heol="ssh simon@heol"
-alias moaz="ssh simon@moaz"
-alias kleine="ssh simon@129.104.214.70"
-
-alias RPS="ssh simon@87.98.173.31 -o ProxyCommand='socat - PROXY:kuzh.polytechnique.fr:%h:%p,proxyport=8080'"
-alias cdla="ssh simon@87.98.173.31 -o ProxyCommand='socat - PROXY:kuzh.polytechnique.fr:%h:%p,proxyport=8080'"
-alias scpExt="scp  -o ProxyCommand='socat - PROXY:kuzh.polytechnique.fr:%h:%p,proxyport=8080'"
-alias sshExt="ssh  -o ProxyCommand='socat - PROXY:kuzh.polytechnique.fr:%h:%p,proxyport=8080'"
 # pour lancer le vnc
 alias x11vnc='x11vnc -usepw'
 
@@ -190,7 +174,6 @@ alias trimWhiteSpace="sed -r 's/\s+$//'"
 
 alias pcat="pygmentize -f terminal256"
 
-# export http_proxy="kuzh.polytechnique.fr:8080"
 export EDITOR="/usr/bin/vim"
 
 
