@@ -32,6 +32,15 @@
 - name: Copy screenrc file configuration to vincent home
   copy: dest=/home/vincent/.screenrc src=vincent/screenrc owner=vincent group=vincent mode=0644
 
+- name: Create ssh directory
+  file: path=/home/vincent/.ssh state=directory recurse=yes owner=vincent group=vincent mode=0755
+
 - name: Create ssh key for user vincent
   openssh_keypair:
-    path: /home/vincent/.ssh
+    path: /home/vincent/.ssh/id_rsa
+
+- name: Change owner of public key
+  file: path=/home/vincent/.ssh/id_rsa.pub state=file owner=vincent group=vincent mode=0644
+
+- name: Change owner of private key
+  file: path=/home/vincent/.ssh/id_rsa state=file owner=vincent group=vincent mode=0600
