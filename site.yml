@@ -14,4 +14,4 @@
         - users
     - role: blog
       tags:
-        -blog
+        - blog

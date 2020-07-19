@@ -1,5 +1,6 @@
 ---
 - name: "Install hugo static blog generator"
   apt:
-    name: hugo
-    state: present
+    deb: https://github.com/gohugoio/hugo/releases/download/v0.74.2/hugo_0.74.2_Linux-64bit.deb
+  environment:
+    PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin

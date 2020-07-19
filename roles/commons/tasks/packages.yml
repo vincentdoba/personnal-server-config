@@ -27,6 +27,3 @@
       - apache2-data
     state: absent
     purge: yes
-
-- name: Install pip
-  easy_install: name=pip

@@ -10,6 +10,13 @@
     state: absent
   notify: Restart nginx
 
+- name: "Do not display version in nginx error page"
+  lineinfile:
+    path: /etc/nginx/nginx.conf
+    regexp: "# server_tokens off;"
+    line: "  server_tokens off;"
+  notify: Restart nginx
+
 - name: Add blog site to nginx
   copy:
     src: vincent-technical-blog.conf
