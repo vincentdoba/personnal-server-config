@@ -7,6 +7,11 @@
   become: yes
   become_user: vincent
 
+- name: "Delete previous blog data"
+  file:
+    path: /var/www/vincent-technical-blog
+    state: absent
+
 - name: "Build blog"
   shell: hugo -s /home/vincent/vincent-technical-blog -d /var/www/vincent-technical-blog
 
