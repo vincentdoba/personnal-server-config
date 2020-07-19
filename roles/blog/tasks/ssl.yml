@@ -14,3 +14,10 @@
     minute: "30"
     hour: "3"
     weekday: "2"
+
+- name: "Disable TLS 1.0 and 1.1"
+  lineinfile:
+    path: /etc/letsencrypt/options-ssl-nginx.conf
+    regexp: '^ssl_protocols TLSv1 TLSv1\.1 TLSv1\.2;'
+    line: "ssl_protocols TLSv1.2 TLSv1.3;"
+  notify: Restart nginx
