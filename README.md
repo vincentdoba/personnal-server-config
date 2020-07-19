@@ -6,6 +6,17 @@
 
 *remote_user* is the user you use to connect to server using ssh. It should not be root.
 
+### Notes on prerequisite
+
+It may be necessary to install the right version of gnupg before running ansible. Indeed, it seems there is conflict between
+gnupg version necessary for python-apt and the version available for debian (2.2.12 vs 2.2.20). You can install the right version
+by typing the following commands:
+
+```bash
+apt-get update
+apt-get install gnupg=2.2.12-1+deb10u1 gpgv=2.2.12-1+deb10u1
+```
+
 ### Using connection with ssh keys
 
 command to copy public key to remote user .ssh file
@@ -65,5 +76,5 @@ ansible-playbook -i inventories/test site.yml -u remote-user --ask-become-pass -
 By running the following command, you will run only your own user configuration
 
 ```bash
-ansible-playbook -i inventories/test site.yml --u remote_user -ask-become-pass --ask-vault-pass --tags="username"
+ansible-playbook -i inventories/test site.yml --u remote_user @doba-ask-become-pass --ask-vault-pass --tags="username"
 ```
