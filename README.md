@@ -65,5 +65,5 @@ ansible-playbook -i inventories/test site.yml -u remote-user --ask-become-pass -
 By running the following command, you will run only your own user configuration
 
 ```bash
-ansible-playbook -i inventories/test site.yml --ask-become-pass --ask-vault-pass --tags="username"
+ansible-playbook -i inventories/test site.yml --u remote_user -ask-become-pass --ask-vault-pass --tags="username"
 ```

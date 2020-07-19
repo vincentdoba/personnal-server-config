@@ -1,0 +1,7 @@
+---
+- include: nginx.yml
+- include: hugo.yml
+- include: ssl.yml
+- include: blog.yml
+  tags:
+    - blog-deploy

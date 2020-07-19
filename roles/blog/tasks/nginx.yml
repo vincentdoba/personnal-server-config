@@ -1,0 +1,26 @@
+---
+- name: "Install nginx webserver"
+  apt:
+    name: nginx
+    state: latest
+
+- name: Remove default nginx site
+  file:
+    name: "/etc/nginx/sites-enabled/default"
+    state: absent
+  notify: Restart nginx
+
+- name: Add blog site to nginx
+  copy:
+    src: vincent-technical-blog.conf
+    dest: "/etc/nginx/sites-available/vincent-technical-blog.conf"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Enable blog site
+  file:
+    src: "/etc/nginx/sites-available/vincent-technical-blog.conf"
+    dest: "/etc/nginx/sites-enabled/vincent-technical-blog.conf"
+    state: link
+  notify: Restart nginx

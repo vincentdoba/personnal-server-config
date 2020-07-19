@@ -31,3 +31,7 @@
 
 - name: Copy screenrc file configuration to vincent home
   copy: dest=/home/vincent/.screenrc src=vincent/screenrc owner=vincent group=vincent mode=0644
+
+- name: Create ssh key for user vincent
+  openssh_keypair:
+    path: /home/vincent/.ssh

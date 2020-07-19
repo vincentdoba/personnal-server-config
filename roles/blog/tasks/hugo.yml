@@ -1,0 +1,5 @@
+---
+- name: "Install hugo static blog generator"
+  apt:
+    name: hugo
+    state: present

@@ -1,0 +1,12 @@
+---
+- name: "Checkout blog repository"
+  git:
+    repo: git@gitlab.com:vincentdoba/vincent-technical-blog.git
+    dest: /home/vincent/vincent-technical-blog
+    force: yes
+  become: no
+
+- name: "Build blog"
+  shell: hugo -s /home/vincent/vincent-technical-blog -d /var/www/vincent-technical-blog
+
+

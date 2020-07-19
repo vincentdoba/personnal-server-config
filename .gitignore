@@ -1,3 +1,6 @@
+# ingore intellij idea files
+.idea
+
 # ignore vim temporary swap files
 *.swp
 

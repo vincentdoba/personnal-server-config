@@ -1,0 +1,5 @@
+---
+- name: Generate Certificate for Domains
+  shell: ./certbot-auto --authenticator standalone --installer nginx -d 'doba.fr' -d 'vincent.doba.fr' --email {{ email }} --agree-tos -n --no-verify-ssl --pre-hook "systemctl stop nginx" --post-hook "systemctl start nginx" --redirect
+  args:
+    chdir: /opt/letsencrypt

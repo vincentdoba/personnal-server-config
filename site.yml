@@ -12,3 +12,6 @@
     - role: users
       tags:
         - users
+    - role: blog
+      tags:
+        -blog
