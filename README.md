@@ -2,19 +2,29 @@
 
 ## Run ansible
 
-**Note : deployment of this server was tested on a freshly installed debian jessie (debian 8)**
+**Note : deployment of this server was tested on a freshly installed debian stretch (debian 9)**
 
 *remote_user* is the user you use to connect to server using ssh. It should not be root.
 
-### Notes on prerequisite
+### Prerequisite
 
-It may be necessary to install the right version of gnupg before running ansible. Indeed, it seems there is conflict between
-gnupg version necessary for python-apt and the version available for debian (2.2.12 vs 2.2.20). You can install the right version
-by typing the following commands:
+Connect to your server as root and perform the following tasks
+
+#### Create your user
+
+You need to create your remote_user as follow 
+
+```bash
+adduser remote_user
+```
+
+#### Install compulsory packages
+
+You need python-apt installed to use apt module of ansible
 
 ```bash
 apt-get update
-apt-get install gnupg=2.2.12-1+deb10u1 gpgv=2.2.12-1+deb10u1
+apt-get install python-apt
 ```
 
 ### Using connection with ssh keys
