@@ -1,7 +1,9 @@
 ---
 - name: Install certbot
   apt:
-    name: certbot
+    name:
+      - certbot
+      - python-certbot-nginx
     state: latest
 
 - name: Generate Certificate for Domains
