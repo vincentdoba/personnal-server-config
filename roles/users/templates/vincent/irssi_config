@@ -1,8 +1,8 @@
 servers = (
   {
-    address = "irc.freenode.net";
+    address = "irc.libera.chat";
     port = "6697";
-    chatnet = "freenode";
+    chatnet = "libera";
     use_ssl = "yes";
     ssl_verify = "no";
     autoconnect = "yes";
@@ -25,7 +25,7 @@ chatnets = {
     max_whois = "4";
     max_query_chans = "5";
   };
-  freenode = { 
+  libera = {
     type = "IRC"; 
     autosendcmd = "/msg NickServ IDENTIFY {{vincent_irssi_password}}";
     nick = "chebitchov"
@@ -36,8 +36,7 @@ channels = (
   { name = "#cdla"; chatnet = "rezosup"; autojoin = "Yes"; },
   { name = "#pica"; chatnet = "rezosup"; autojoin = "Yes"; },
   { name = "#sac"; chatnet = "rezosup"; autojoin = "Yes"; },
-  { name = "#ecn"; chatnet = "freenode"; autojoin = "Yes"; }
-  { name = "#arch-fr-free"; chatnet = "freenode"; autojoin = "Yes"; }
+  { name = "##arch-fr-free"; chatnet = "libera"; autojoin = "Yes"; }
 );
 
 aliases = {
