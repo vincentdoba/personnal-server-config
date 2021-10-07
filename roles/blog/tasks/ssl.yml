@@ -3,7 +3,7 @@
   apt:
     name:
       - certbot
-      - python-certbot-nginx
+      - python3-certbot-nginx
     state: latest
 
 - name: Generate Certificate for Domains
