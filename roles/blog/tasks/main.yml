@@ -1,7 +1,7 @@
 ---
-- include: nginx.yml
-- include: ssl.yml
-- include: hugo.yml
-- include: blog.yml
+- import_tasks: nginx.yml
+- import_tasks: ssl.yml
+- import_tasks: hugo.yml
+- import_tasks: blog.yml
   tags:
     - blog-deploy

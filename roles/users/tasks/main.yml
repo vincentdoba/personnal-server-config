@@ -1,7 +1,7 @@
 ---
-- include: root.yml
+- import_tasks: root.yml
   tags:
     - root
-- include: vincent.yml
+- import_tasks: vincent.yml
   tags:
     - vincent

@@ -1,4 +1,4 @@
 ---
-- include: packages.yml
-- include: directories.yml
-- include: sudo.yml
+- import_tasks: packages.yml
+- import_tasks: directories.yml
+- import_tasks: sudo.yml
